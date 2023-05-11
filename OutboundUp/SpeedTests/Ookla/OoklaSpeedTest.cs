@@ -53,7 +53,13 @@ namespace OutboundUp.SpeedTests.Ookla
                 UploadSpeed = NumericConvertors.ConvertBpsToMbps(ooklaResult.Upload.Bandwidth),
                 PingAverage = ooklaResult.Ping.Latency,
                 PingHigh = ooklaResult.Ping.High,
-                PingLow = ooklaResult.Ping.Low
+                PingLow = ooklaResult.Ping.Low,
+                DownloadLatencyAverage = ooklaResult.Download.Latency.Iqm,
+                DownloadLatencyHigh = ooklaResult.Download.Latency.High,
+                DownloadLatencyLow = ooklaResult.Download.Latency.Low,
+                UploadLatencyAverage = ooklaResult.Upload.Latency.Iqm,
+                UploadLatencyHigh = ooklaResult.Upload.Latency.High,
+                UploadLatencyLow = ooklaResult.Upload.Latency.Low,
             };
 
             return result;

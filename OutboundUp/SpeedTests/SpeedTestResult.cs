@@ -23,7 +23,37 @@
         public string? ServerHostName { get; set; }
 
         /// <summary>
-        /// Response time in milliseconds
+        /// Latency in milliseconds
+        /// </summary>
+        public double UploadLatencyAverage { get; set; }
+
+        /// <summary>
+        /// The highest latency from a given test set
+        /// </summary>
+        public double UploadLatencyHigh { get; set; }
+
+        /// <summary>
+        /// The lowest latency from a given test set
+        /// </summary>
+        public double UploadLatencyLow { get; set; }
+
+        /// <summary>
+        /// Latency in milliseconds
+        /// </summary>
+        public double DownloadLatencyAverage { get; set; }
+
+        /// <summary>
+        /// The highest latency from a given test set
+        /// </summary>
+        public double DownloadLatencyHigh { get; set; }
+
+        /// <summary>
+        /// The lowest latency from a given test set
+        /// </summary>
+        public double DownloadLatencyLow { get; set; }
+
+        /// <summary>
+        /// Average ping in milliseconds
         /// </summary>
         public double PingAverage { get; set; }
 

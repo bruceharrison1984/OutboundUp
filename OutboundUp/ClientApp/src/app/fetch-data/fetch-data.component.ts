@@ -15,7 +15,7 @@ export class FetchDataComponent implements OnDestroy {
     this.speedTestResultsInterval = interval(1000)
       .pipe(
         startWith(0),
-        switchMap(() => speedTestResultService.getRawSpeedTestResults())
+        switchMap(() => speedTestResultService.getRawSpeedTestData())
       )
       .subscribe((results) => {
         this.speedTestResults = results.data;

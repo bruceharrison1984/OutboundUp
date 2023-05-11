@@ -25,23 +25,30 @@ namespace OutboundUp.Controllers
             var uploadSpeedLine = new NgxLineChartLine { Name = "Upload Speed", Series = uploadSpeedData };
 
             var pingData = speedTestData.Select(x => new NgxLineChartSeriesData { Name = x.Timestamp.ToString(), Value = x.PingAverage, Max = x.PingHigh, Min = x.PingLow });
-            var pingLine = new NgxLineChartLine { Name = "Response Time", Series = pingData };
+            var pingLine = new NgxLineChartLine { Name = "Ping", Series = pingData };
 
-            return new SpeedTestResultsResponse(new NgxLineChartLine[] { downloadSpeedLine, uploadSpeedLine, pingLine });
+            var downloadLatencyData = speedTestData.Select(x => new NgxLineChartSeriesData { Name = x.Timestamp.ToString(), Value = x.DownloadLatencyAverage, Max = x.DownloadLatencyHigh, Min = x.DownloadLatencyLow });
+            var downloadLatencyLine = new NgxLineChartLine { Name = "Download Latency", Series = downloadLatencyData };
+
+            var uploadLatencyData = speedTestData.Select(x => new NgxLineChartSeriesData { Name = x.Timestamp.ToString(), Value = x.UploadLatencyAverage, Max = x.UploadLatencyHigh, Min = x.UploadLatencyLow });
+            var uploadLatencyLine = new NgxLineChartLine { Name = "Upload Latency", Series = uploadLatencyData };
+
+            return new SpeedTestResultsResponse(
+                new NgxLineChartLine[] { downloadSpeedLine, uploadSpeedLine },
+                new NgxLineChartLine[] { pingLine, downloadLatencyLine, uploadLatencyLine });
         }
 
-        public RawSpeedTestResultsResponse Raw()
-        {
-            return new RawSpeedTestResultsResponse(_dbContext.HttpCheckResults.OrderByDescending(x => x.Timestamp));
-        }
+        public RawSpeedTestResultsResponse Raw() => new RawSpeedTestResultsResponse(_dbContext.HttpCheckResults.OrderByDescending(x => x.Id));
 
         public class SpeedTestResultsResponse
         {
-            public SpeedTestResultsResponse(IEnumerable<NgxLineChartLine> data)
+            public SpeedTestResultsResponse(IEnumerable<NgxLineChartLine> bandwidthData, IEnumerable<NgxLineChartLine> latencyData)
             {
-                LineChartData = data;
+                Bandwidth = bandwidthData;
+                Latency = latencyData;
             }
-            public IEnumerable<NgxLineChartLine> LineChartData { get; set; }
+            public IEnumerable<NgxLineChartLine> Bandwidth { get; set; }
+            public IEnumerable<NgxLineChartLine> Latency { get; set; }
         }
 
         public class RawSpeedTestResultsResponse

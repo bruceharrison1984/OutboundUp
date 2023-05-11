@@ -14,13 +14,13 @@ export class FetchSpeedTestResultsService {
     @Inject('BASE_URL') protected baseUrl: string
   ) {}
 
-  getSpeedTestResults() {
+  getSpeedTestChartData() {
     return this.http.get<SpeedTestResultsResponse>(
       this.baseUrl + 'speedtestresults'
     );
   }
 
-  getRawSpeedTestResults() {
+  getRawSpeedTestData() {
     return this.http.get<RawSpeedTestResultsResponse>(
       this.baseUrl + 'speedtestresults/raw'
     );

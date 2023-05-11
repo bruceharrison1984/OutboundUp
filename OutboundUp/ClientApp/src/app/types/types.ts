@@ -1,5 +1,6 @@
 export interface SpeedTestResultsResponse {
-  lineChartData: SpeedTestLine[];
+  bandwidth: SpeedTestLine[];
+  latency: SpeedTestLine[];
 }
 
 export interface SpeedTestLine {
@@ -23,7 +24,15 @@ export interface RawSpeedTestResult {
   timestamp: string;
   isSuccess: boolean;
   serverHostName: string;
-  responseTime: number;
   downloadSpeed: number;
   uploadSpeed: number;
+  pingAverage: number;
+  pingHigh: number;
+  pingLow: number;
+  downloadLatencyAverage: number;
+  downloadLatencyHigh: number;
+  downloadLatencyLow: number;
+  uploadLatencyAverage: number;
+  uploadLatencyHigh: number;
+  uploadLatencyLow: number;
 }

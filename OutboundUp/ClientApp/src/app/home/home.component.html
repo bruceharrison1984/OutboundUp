@@ -1,1 +1,9 @@
-<speed-test-chart [data]="speedTestResults"></speed-test-chart>
+<speed-test-chart
+  [data]="bandwidthResults"
+  *ngIf="bandwidthResults.length > 0"
+></speed-test-chart>
+
+<speed-test-chart
+  [data]="latencyResults"
+  *ngIf="latencyResults.length > 0"
+></speed-test-chart>

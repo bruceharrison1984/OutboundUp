@@ -8,17 +8,19 @@ import { SpeedTestLine } from '../types/types';
   templateUrl: './home.component.html',
 })
 export class HomeComponent implements OnDestroy {
-  speedTestResults: SpeedTestLine[] = [];
+  bandwidthResults: SpeedTestLine[] = [];
+  latencyResults: SpeedTestLine[] = [];
   speedTestResultsInterval: Subscription;
 
   constructor(public speedTestResultService: FetchSpeedTestResultsService) {
     this.speedTestResultsInterval = interval(1000)
       .pipe(
         startWith(0),
-        switchMap(() => speedTestResultService.getSpeedTestResults())
+        switchMap(() => speedTestResultService.getSpeedTestChartData())
       )
       .subscribe((results) => {
-        this.speedTestResults = results.lineChartData;
+        this.bandwidthResults = results.bandwidth;
+        this.latencyResults = results.latency;
       });
   }
 
