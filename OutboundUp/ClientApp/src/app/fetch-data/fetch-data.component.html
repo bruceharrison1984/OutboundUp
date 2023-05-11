@@ -1,0 +1,28 @@
+<h1 id="tableLabel">Raw Speed Test Data</h1>
+
+<p *ngIf="!speedTestResults"><em>Loading...</em></p>
+
+<table class="table table-striped" aria-labelledby="tableLabel">
+  <thead>
+    <tr>
+      <th>Id</th>
+      <th>Timestamp</th>
+      <th>Success</th>
+      <th>Server Host Name</th>
+      <th>Response Time</th>
+      <th>Download Speed (Mpbs)</th>
+      <th>Upload Speed (Mpbs)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let result of speedTestResults">
+      <td>{{ result.id }}</td>
+      <td>{{ result.timestamp }}</td>
+      <td>{{ result.isSuccess }}</td>
+      <td>{{ result.serverHostName }}</td>
+      <td>{{ result.responseTime }}</td>
+      <td>{{ result.downloadSpeed }}</td>
+      <td>{{ result.uploadSpeed }}</td>
+    </tr>
+  </tbody>
+</table>
