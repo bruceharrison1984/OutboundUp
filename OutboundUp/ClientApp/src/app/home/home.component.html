@@ -1,9 +1,24 @@
-<speed-test-chart
-  [data]="bandwidthResults"
-  *ngIf="bandwidthResults.length > 0"
-></speed-test-chart>
+<div class="card w-4/5 shadow-xl flex-row">
+  <div class="card-body">
+    <h2 class="card-title">Bandwidth</h2>
+    <progress
+      class="progress w-full"
+      *ngIf="!bandwidthResults.length"
+    ></progress>
+    <speed-test-chart
+      [data]="bandwidthResults"
+      *ngIf="bandwidthResults.length > 0"
+    ></speed-test-chart>
+  </div>
+</div>
 
-<speed-test-chart
-  [data]="latencyResults"
-  *ngIf="latencyResults.length > 0"
-></speed-test-chart>
+<div class="card w-4/5 shadow-xl flex-row">
+  <progress class="progress w-full" *ngIf="!bandwidthResults.length"></progress>
+  <div class="card-body">
+    <h2 class="card-title">Latency</h2>
+    <speed-test-chart
+      [data]="latencyResults"
+      *ngIf="latencyResults.length > 0"
+    ></speed-test-chart>
+  </div>
+</div>

@@ -1,44 +1,49 @@
 <h1 id="tableLabel">Raw Speed Test Data</h1>
 
-<p *ngIf="!speedTestResults"><em>Loading...</em></p>
+<progress class="progress w-full" *ngIf="!speedTestResults.length"></progress>
 
-<table class="table table-striped" aria-labelledby="tableLabel">
-  <thead>
-    <tr>
-      <th>Id</th>
-      <th>Timestamp</th>
-      <th>Success</th>
-      <th>Server Host Name</th>
-      <th>Download Speed (Mpbs)</th>
-      <th>Upload Speed (Mpbs)</th>
-      <th>Ping</th>
-      <th>Ping High</th>
-      <th>Ping Low</th>
-      <th>Download Latency Average</th>
-      <th>Download Latency High</th>
-      <th>Download Latency Low</th>
-      <th>Upload Latency Average</th>
-      <th>Upload Latency High</th>
-      <th>Upload Latency Low</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let result of speedTestResults">
-      <td>{{ result.id }}</td>
-      <td>{{ result.timestamp }}</td>
-      <td>{{ result.isSuccess }}</td>
-      <td>{{ result.serverHostName }}</td>
-      <td>{{ result.downloadSpeed }}</td>
-      <td>{{ result.uploadSpeed }}</td>
-      <td>{{ result.pingAverage }}</td>
-      <td>{{ result.pingHigh }}</td>
-      <td>{{ result.pingLow }}</td>
-      <td>{{ result.downloadLatencyAverage }}</td>
-      <td>{{ result.downloadLatencyHigh }}</td>
-      <td>{{ result.downloadLatencyLow }}</td>
-      <td>{{ result.uploadLatencyAverage }}</td>
-      <td>{{ result.uploadLatencyHigh }}</td>
-      <td>{{ result.uploadLatencyLow }}</td>
-    </tr>
-  </tbody>
-</table>
+<div class="overflow-x-auto">
+  <table
+    class="table w-full table-zebra table-compact"
+    aria-labelledby="tableLabel"
+  >
+    <thead>
+      <tr>
+        <th>Id</th>
+        <th>Timestamp</th>
+        <th>Success</th>
+        <th>Server Host Name</th>
+        <th>Download Speed (Mpbs)</th>
+        <th>Upload Speed (Mpbs)</th>
+        <th>Ping</th>
+        <th>Ping High</th>
+        <th>Ping Low</th>
+        <th>Download Latency Average</th>
+        <th>Download Latency High</th>
+        <th>Download Latency Low</th>
+        <th>Upload Latency Average</th>
+        <th>Upload Latency High</th>
+        <th>Upload Latency Low</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let result of speedTestResults">
+        <td>{{ result.id }}</td>
+        <td>{{ result.timestamp }}</td>
+        <td>{{ result.isSuccess }}</td>
+        <td>{{ result.serverHostName }}</td>
+        <td>{{ result.downloadSpeed }}</td>
+        <td>{{ result.uploadSpeed }}</td>
+        <td>{{ result.pingAverage }}</td>
+        <td>{{ result.pingHigh }}</td>
+        <td>{{ result.pingLow }}</td>
+        <td>{{ result.downloadLatencyAverage }}</td>
+        <td>{{ result.downloadLatencyHigh }}</td>
+        <td>{{ result.downloadLatencyLow }}</td>
+        <td>{{ result.uploadLatencyAverage }}</td>
+        <td>{{ result.uploadLatencyHigh }}</td>
+        <td>{{ result.uploadLatencyLow }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
