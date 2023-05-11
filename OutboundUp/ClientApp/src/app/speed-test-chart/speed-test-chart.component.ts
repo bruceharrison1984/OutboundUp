@@ -3,7 +3,6 @@ import { Component, Input } from '@angular/core';
 @Component({
   selector: 'speed-test-chart',
   templateUrl: './speed-test-chart.component.html',
-  styleUrls: ['./speed-test-chart.component.css'],
 })
 export class SpeedTestChartComponent {
   @Input() data: any[] = [];
@@ -24,5 +23,9 @@ export class SpeedTestChartComponent {
 
   constructor() {
     Object.assign(this, { multi: this.data });
+  }
+
+  dateTickFormatting(val: string) {
+    return new Date(Date.parse(val)).toLocaleString();
   }
 }

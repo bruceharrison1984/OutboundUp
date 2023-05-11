@@ -1,24 +1,29 @@
-<div class="card w-4/5 shadow-xl flex-row">
-  <div class="card-body">
-    <h2 class="card-title">Bandwidth</h2>
-    <progress
-      class="progress w-full"
-      *ngIf="!bandwidthResults.length"
-    ></progress>
-    <speed-test-chart
-      [data]="bandwidthResults"
-      *ngIf="bandwidthResults.length > 0"
-    ></speed-test-chart>
+<div class="mt-10 mb-10 space-y-10 items-center flex flex-col">
+  <div class="card card-compact w-4/5 shadow-xl">
+    <div class="card-body">
+      <h2 class="card-title">Bandwidth</h2>
+      <progress
+        class="progress w-full"
+        *ngIf="!bandwidthResults.length"
+      ></progress>
+      <speed-test-chart
+        [data]="bandwidthResults"
+        *ngIf="bandwidthResults.length > 0"
+      ></speed-test-chart>
+    </div>
   </div>
-</div>
 
-<div class="card w-4/5 shadow-xl flex-row">
-  <progress class="progress w-full" *ngIf="!bandwidthResults.length"></progress>
-  <div class="card-body">
-    <h2 class="card-title">Latency</h2>
-    <speed-test-chart
-      [data]="latencyResults"
-      *ngIf="latencyResults.length > 0"
-    ></speed-test-chart>
+  <div class="card card-compact w-4/5 shadow-xl">
+    <div class="card-body">
+      <h2 class="card-title">Latency</h2>
+      <progress
+        class="progress w-full"
+        *ngIf="!bandwidthResults.length"
+      ></progress>
+      <speed-test-chart
+        [data]="latencyResults"
+        *ngIf="latencyResults.length > 0"
+      ></speed-test-chart>
+    </div>
   </div>
 </div>

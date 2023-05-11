@@ -11,6 +11,6 @@ namespace OutboundUp.Database
 
         }
 
-        public DbSet<SpeedTestResult> HttpCheckResults { get; set; }
+        public DbSet<SpeedTestResult> SpeedTestResults { get; set; }
     }
 }

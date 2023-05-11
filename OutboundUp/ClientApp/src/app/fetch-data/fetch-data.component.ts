@@ -1,5 +1,12 @@
 import { Component, OnDestroy } from '@angular/core';
-import { Subscription, interval, startWith, switchMap } from 'rxjs';
+import {
+  Subscription,
+  interval,
+  retry,
+  startWith,
+  switchMap,
+  timer,
+} from 'rxjs';
 import { FetchSpeedTestResultsService } from '../services/fetch-speed-test-results.service';
 import { RawSpeedTestResult } from '../types/types';
 
@@ -15,7 +22,11 @@ export class FetchDataComponent implements OnDestroy {
     this.speedTestResultsInterval = interval(1000)
       .pipe(
         startWith(0),
-        switchMap(() => speedTestResultService.getRawSpeedTestData())
+        switchMap(() => speedTestResultService.getRawSpeedTestData()),
+        retry({
+          count: Infinity,
+          delay: (error, count) => timer(Math.min(60000, 2 ^ (count * 1000))),
+        })
       )
       .subscribe((results) => {
         this.speedTestResults = results.data;

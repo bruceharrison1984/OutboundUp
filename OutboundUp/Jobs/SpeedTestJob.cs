@@ -24,13 +24,13 @@ namespace OutboundUp.Jobs
             {
                 var output = await _speedtestClient.RunSpeedTest();
 
-                await _dbContext.HttpCheckResults.AddAsync(output);
+                await _dbContext.SpeedTestResults.AddAsync(output);
                 await _dbContext.SaveChangesAsync();
             }
             catch (Exception e)
             {
                 logger.LogError(e, $"SpeedTest failed");
-                await _dbContext.HttpCheckResults.AddAsync(new SpeedTestResult
+                await _dbContext.SpeedTestResults.AddAsync(new SpeedTestResult
                 {
                     Timestamp = DateTimeOffset.Now,
                     IsSuccess = false,

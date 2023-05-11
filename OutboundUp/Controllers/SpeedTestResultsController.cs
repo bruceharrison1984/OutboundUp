@@ -16,7 +16,7 @@ namespace OutboundUp.Controllers
 
         public SpeedTestResultsResponse Index()
         {
-            var speedTestData = _dbContext.HttpCheckResults.OrderByDescending(x => x.Timestamp).ToList();
+            var speedTestData = _dbContext.SpeedTestResults.OrderBy(x => x.Timestamp);
 
             var downloadSpeedData = speedTestData.Select(x => new NgxLineChartSeriesData { Name = x.Timestamp.ToString(), Value = x.DownloadSpeed });
             var downloadSpeedLine = new NgxLineChartLine { Name = "Download Speed", Series = downloadSpeedData };
@@ -38,7 +38,7 @@ namespace OutboundUp.Controllers
                 new NgxLineChartLine[] { pingLine, downloadLatencyLine, uploadLatencyLine });
         }
 
-        public RawSpeedTestResultsResponse Raw() => new RawSpeedTestResultsResponse(_dbContext.HttpCheckResults.OrderByDescending(x => x.Id));
+        public RawSpeedTestResultsResponse Raw() => new RawSpeedTestResultsResponse(_dbContext.SpeedTestResults.OrderByDescending(x => x.Id));
 
         public class SpeedTestResultsResponse
         {

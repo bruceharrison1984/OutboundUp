@@ -1,6 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FetchSpeedTestResultsService } from '../services/fetch-speed-test-results.service';
-import { Subscription, interval, startWith, switchMap } from 'rxjs';
+import {
+  Subscription,
+  interval,
+  retry,
+  startWith,
+  switchMap,
+  timer,
+} from 'rxjs';
 import { SpeedTestLine } from '../types/types';
 
 @Component({
@@ -16,7 +23,11 @@ export class HomeComponent implements OnDestroy {
     this.speedTestResultsInterval = interval(1000)
       .pipe(
         startWith(0),
-        switchMap(() => speedTestResultService.getSpeedTestChartData())
+        switchMap(() => speedTestResultService.getSpeedTestChartData()),
+        retry({
+          count: Infinity,
+          delay: (error, count) => timer(Math.min(60000, 2 ^ (count * 1000))),
+        })
       )
       .subscribe((results) => {
         this.bandwidthResults = results.bandwidth;

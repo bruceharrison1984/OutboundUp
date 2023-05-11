@@ -36,3 +36,7 @@ export interface RawSpeedTestResult {
   uploadLatencyHigh: number;
   uploadLatencyLow: number;
 }
+
+export interface HealthCheckResult {
+  isJobRunning: boolean;
+}

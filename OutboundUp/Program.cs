@@ -24,13 +24,12 @@ namespace OutboundUp
             {
                 q.UseMicrosoftDependencyInjectionJobFactory();
 
-                var jobKey = new JobKey("HttpCheck");
+                var jobKey = new JobKey("SpeedTestJob");
                 q.AddJob<SpeedTestJob>(opts => opts.WithIdentity(jobKey));
 
                 q.AddTrigger(opts => opts
                     .ForJob(jobKey)
-                    .WithIdentity("HttpCheck-trigger")
-                    //This Cron interval can be described as "run every minute" (when second is zero)
+                    .WithIdentity("SpeedTestJob-Trigger")
                     .WithCronSchedule("0 * * ? * *")
                 );
             });
