@@ -8,7 +8,7 @@
 
     public class NgxLineChartSeriesData
     {
-        public string Name { get; set; }
+        public long Name { get; set; }
         public double Value { get; set; }
         public double? Min { get; set; }
         public double? Max { get; set; }

@@ -9,7 +9,7 @@ export interface SpeedTestLine {
 }
 
 export interface NgxLineChartSeriesData {
-  name: string;
+  name: number;
   value: number;
   min: number;
   max: number;
@@ -21,7 +21,7 @@ export interface RawSpeedTestResultsResponse {
 
 export interface RawSpeedTestResult {
   id: number;
-  timestamp: string;
+  timestamp: number;
   isSuccess: boolean;
   serverHostName: string;
   downloadSpeed: number;

@@ -8,7 +8,7 @@
       ></progress>
       <speed-test-chart
         [data]="bandwidthResults"
-        *ngIf="bandwidthResults.length > 0"
+        *ngIf="!!bandwidthResults.length"
       ></speed-test-chart>
     </div>
   </div>
@@ -22,7 +22,7 @@
       ></progress>
       <speed-test-chart
         [data]="latencyResults"
-        *ngIf="latencyResults.length > 0"
+        *ngIf="!!latencyResults.length"
       ></speed-test-chart>
     </div>
   </div>
