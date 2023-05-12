@@ -5,7 +5,8 @@ import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
 
 export function getBaseUrl() {
-  return environment.apiUrl;
+  const { protocol, hostname, port } = window.location;
+  return `${protocol}//${hostname}:${port}/`;
 }
 
 const providers = [{ provide: 'BASE_URL', useFactory: getBaseUrl, deps: [] }];

@@ -27,7 +27,6 @@ export class NavMenuComponent {
         retry({
           count: Infinity,
           delay: (error, count) => {
-            console.error('API server could not be contacted!');
             this.statusMessage = 'Could not contact API server';
             return timer(Math.min(60000, 2 ^ (count * 1000)));
           },
