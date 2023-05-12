@@ -46,7 +46,7 @@ namespace OutboundUp.SpeedTests.Ookla
 
             var result = new SpeedTestResult
             {
-                Timestamp = ooklaResult.Timestamp,
+                UnixTimestampMs = ooklaResult.Timestamp.ToUnixTimeMilliseconds(),
                 IsSuccess = true,
                 ServerHostName = ooklaResult.Server.Host,
                 DownloadSpeed = NumericConvertors.ConvertBpsToMbps(ooklaResult.Download.Bandwidth),

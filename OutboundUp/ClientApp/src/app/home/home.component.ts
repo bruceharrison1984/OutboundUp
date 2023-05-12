@@ -9,6 +9,8 @@ import {
   timer,
 } from 'rxjs';
 import { SpeedTestLine } from '../types/types';
+import { REFRESH_INTERVAL } from '../app.module';
+import { pollingWithRetry } from '../utils';
 
 @Component({
   selector: 'app-home',
@@ -20,19 +22,12 @@ export class HomeComponent implements OnDestroy {
   speedTestResultsInterval: Subscription;
 
   constructor(public speedTestResultService: FetchSpeedTestResultsService) {
-    this.speedTestResultsInterval = interval(1000)
-      .pipe(
-        startWith(0),
-        switchMap(() => speedTestResultService.getSpeedTestChartData()),
-        retry({
-          count: Infinity,
-          delay: (error, count) => timer(Math.min(60000, 2 ^ (count * 1000))),
-        })
-      )
-      .subscribe((results) => {
-        this.bandwidthResults = results.bandwidth;
-        this.latencyResults = results.latency;
-      });
+    this.speedTestResultsInterval = pollingWithRetry(REFRESH_INTERVAL, () =>
+      speedTestResultService.getSpeedTestChartData()
+    ).subscribe((results) => {
+      this.bandwidthResults = results.bandwidth;
+      this.latencyResults = results.latency;
+    });
   }
 
   ngOnDestroy(): void {

@@ -10,7 +10,7 @@
         /// <summary>
         /// Timestamp of when the test was ran
         /// </summary>
-        public DateTimeOffset Timestamp { get; set; }
+        public long UnixTimestampMs { get; set; }
 
         /// <summary>
         /// Was the overall test successful

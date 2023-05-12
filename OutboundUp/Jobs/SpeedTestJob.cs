@@ -32,7 +32,7 @@ namespace OutboundUp.Jobs
                 logger.LogError(e, $"SpeedTest failed");
                 await _dbContext.SpeedTestResults.AddAsync(new SpeedTestResult
                 {
-                    Timestamp = DateTimeOffset.Now,
+                    UnixTimestampMs = DateTimeOffset.Now.ToUnixTimeMilliseconds(),
                     IsSuccess = false,
                 });
                 await _dbContext.SaveChangesAsync();

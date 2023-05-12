@@ -20,15 +20,16 @@ export class NavMenuComponent {
   healthCheckResultsInterval: Subscription;
 
   constructor(fetchHealthCheckService: FetchHealthCheckService) {
-    this.healthCheckResultsInterval = interval(1000)
+    this.healthCheckResultsInterval = interval(5000)
       .pipe(
         startWith(0),
         switchMap(() => fetchHealthCheckService.getHealthCheck()),
         retry({
           count: Infinity,
           delay: (error, count) => {
-            this.statusMessage = 'Could not contact API server';
-            return timer(Math.min(60000, 2 ^ (count * 1000)));
+            this.healthCheckResult = undefined;
+            this.statusMessage = `${error.status} ${error.statusText}`;
+            return timer(Math.min(60000, 2 ^ (count * 5000)));
           },
         })
       )

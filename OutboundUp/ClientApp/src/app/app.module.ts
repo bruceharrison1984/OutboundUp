@@ -11,6 +11,8 @@ import { SpeedTestChartComponent } from './speed-test-chart/speed-test-chart.com
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+export const REFRESH_INTERVAL = 5000;
+
 @NgModule({
   declarations: [
     AppComponent,

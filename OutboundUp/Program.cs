@@ -18,7 +18,7 @@ namespace OutboundUp
                 x.TimestampFormat = "[HH:mm:ss] ";
             });
 
-            builder.Services.AddDbContext<OutboundUpDbContext>(o => o.UseInMemoryDatabase("OutboundUp"));
+            builder.Services.AddDbContext<OutboundUpDbContext>();
             builder.Services.Configure<QuartzOptions>(builder.Configuration.GetSection("Quartz"));
             builder.Services.AddQuartz(q =>
             {
@@ -46,6 +46,7 @@ namespace OutboundUp
 
             var app = builder.Build();
 
+
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
             {
@@ -66,6 +67,22 @@ namespace OutboundUp
                 pattern: "{controller}/{action=Index}/{id?}");
 
             app.MapFallbackToFile("index.html");
+
+            using (var scope = app.Services.CreateScope())
+            {
+                var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+                var dbContext = scope.ServiceProvider.GetRequiredService<OutboundUpDbContext>();
+                var pendingMigrations = dbContext.Database.GetPendingMigrations();
+                if (pendingMigrations.Any())
+                {
+                    logger.LogInformation("Running DB migrations...");
+                    dbContext.Database.Migrate();
+                }
+                else
+                {
+                    logger.LogInformation("No DB migrations required");
+                }
+            }
 
             app.Run();
         }

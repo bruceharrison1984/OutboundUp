@@ -16,21 +16,21 @@ namespace OutboundUp.Controllers
 
         public SpeedTestResultsResponse Index()
         {
-            var speedTestData = _dbContext.SpeedTestResults.OrderBy(x => x.Timestamp);
+            var speedTestData = _dbContext.SpeedTestResults.OrderBy(x => x.UnixTimestampMs);
 
-            var downloadSpeedData = speedTestData.Select(x => new NgxLineChartSeriesData { Name = x.Timestamp.ToUnixTimeMilliseconds(), Value = x.DownloadSpeed });
+            var downloadSpeedData = speedTestData.Select(x => new NgxLineChartSeriesData { Name = x.UnixTimestampMs, Value = x.DownloadSpeed });
             var downloadSpeedLine = new NgxLineChartLine { Name = "Download Speed", Series = downloadSpeedData };
 
-            var uploadSpeedData = speedTestData.Select(x => new NgxLineChartSeriesData { Name = x.Timestamp.ToUnixTimeMilliseconds(), Value = x.UploadSpeed });
+            var uploadSpeedData = speedTestData.Select(x => new NgxLineChartSeriesData { Name = x.UnixTimestampMs, Value = x.UploadSpeed });
             var uploadSpeedLine = new NgxLineChartLine { Name = "Upload Speed", Series = uploadSpeedData };
 
-            var pingData = speedTestData.Select(x => new NgxLineChartSeriesData { Name = x.Timestamp.ToUnixTimeMilliseconds(), Value = x.PingAverage, Max = x.PingHigh, Min = x.PingLow });
+            var pingData = speedTestData.Select(x => new NgxLineChartSeriesData { Name = x.UnixTimestampMs, Value = x.PingAverage, Max = x.PingHigh, Min = x.PingLow });
             var pingLine = new NgxLineChartLine { Name = "Ping", Series = pingData };
 
-            var downloadLatencyData = speedTestData.Select(x => new NgxLineChartSeriesData { Name = x.Timestamp.ToUnixTimeMilliseconds(), Value = x.DownloadLatencyAverage, Max = x.DownloadLatencyHigh, Min = x.DownloadLatencyLow });
+            var downloadLatencyData = speedTestData.Select(x => new NgxLineChartSeriesData { Name = x.UnixTimestampMs, Value = x.DownloadLatencyAverage, Max = x.DownloadLatencyHigh, Min = x.DownloadLatencyLow });
             var downloadLatencyLine = new NgxLineChartLine { Name = "Download Latency", Series = downloadLatencyData };
 
-            var uploadLatencyData = speedTestData.Select(x => new NgxLineChartSeriesData { Name = x.Timestamp.ToUnixTimeMilliseconds(), Value = x.UploadLatencyAverage, Max = x.UploadLatencyHigh, Min = x.UploadLatencyLow });
+            var uploadLatencyData = speedTestData.Select(x => new NgxLineChartSeriesData { Name = x.UnixTimestampMs, Value = x.UploadLatencyAverage, Max = x.UploadLatencyHigh, Min = x.UploadLatencyLow });
             var uploadLatencyLine = new NgxLineChartLine { Name = "Upload Latency", Series = uploadLatencyData };
 
             return new SpeedTestResultsResponse(
