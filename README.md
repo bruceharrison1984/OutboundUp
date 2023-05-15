@@ -21,3 +21,7 @@ docker run -d -p 8080:80 outbound-up
 ```
 
 This will start the container in the background, and it will immediately being running speed tests. The UI can be viewed by visiting `localhost:8080`.
+
+### Build Container
+
+Running `docker build -f OutboundUp/Dockerfile . -t outbound-up` from the solution level `OutboundUp` directory will build the container locally.
