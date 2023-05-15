@@ -1,5 +1,9 @@
 # OutboundUp
 
+![Screenshot](outboundup-screenshot.png)
+
+## Description
+
 OuboundUp is a real-time, outbound internet connection monitor and speed tester. It is fully containerized, and can be run with or without full Sqlite database persistence.
 
 - Ookla Speed Test
@@ -17,5 +21,3 @@ docker run -d -p 8080:80 outbound-up
 ```
 
 This will start the container in the background, and it will immediately being running speed tests. The UI can be viewed by visiting `localhost:8080`.
-
-![Screenshot](outboundup-screenshot.png)
