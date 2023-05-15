@@ -1,8 +1,8 @@
-<div class="mt-10 mb-10 space-y-10 items-center flex flex-col">
-  <div class="w-4/5 space-x-10 items-center flex flex-row">
+<div class="mt-10 mb-10 gap-y-10 items-center flex flex-col">
+  <div class="w-4/5 space-x-10 flex flex-row items-stretch flex-wrap gap-y-10">
     <div class="card card-compact shadow-xl bg-base-100 flex-1">
       <div class="card-body items-center">
-        <h2 class="card-title underline">Health Results</h2>
+        <h2 class="card-title underline">Success Rate</h2>
         <progress
           class="progress w-full"
           *ngIf="
@@ -10,6 +10,13 @@
             !statistics?.successfulHealthChecks
           "
         ></progress>
+        <span
+          class="font-bold text-4xl"
+          *ngIf="
+            statistics?.failedHealthChecks && statistics?.successfulHealthChecks
+          "
+          >{{ successRate }}%
+        </span>
       </div>
     </div>
     <div class="card card-compact shadow-xl bg-base-100 flex-1">
@@ -19,7 +26,7 @@
           class="progress w-full"
           *ngIf="!statistics?.averagePing"
         ></progress>
-        <span class="font-bold text-lg" *ngIf="statistics?.averagePing"
+        <span class="font-bold text-4xl" *ngIf="statistics?.averagePing"
           >{{ statistics?.averagePing }}ms
         </span>
       </div>
@@ -31,9 +38,15 @@
           class="progress w-full"
           *ngIf="!statistics?.averageDownloadSpeed"
         ></progress>
-        <span class="font-bold text-lg" *ngIf="statistics?.averageDownloadSpeed"
-          >{{ statistics?.averageDownloadSpeed }}mbps</span
-        >
+        <div class="h-full flex flex-col align-middle">
+          <div class="flex-1"></div>
+          <span
+            class="font-bold text-4xl"
+            *ngIf="statistics?.averageDownloadSpeed"
+            >{{ statistics?.averageDownloadSpeed }}mbps</span
+          >
+          <div class="flex-1"></div>
+        </div>
       </div>
     </div>
     <div class="card card-compact shadow-xl bg-base-100 flex-1">
@@ -43,7 +56,7 @@
           class="progress w-full"
           *ngIf="!statistics?.averageUploadSpeed"
         ></progress>
-        <span class="font-bold text-lg" *ngIf="statistics?.averageUploadSpeed"
+        <span class="font-bold text-4xl" *ngIf="statistics?.averageUploadSpeed"
           >{{ statistics?.averageUploadSpeed }}mbps</span
         >
       </div>

@@ -30,6 +30,7 @@ namespace OutboundUp.SpeedTests.Ookla
                     FileName = "/tools/speedtest",
                     Arguments = "--accept-license -f json -u Mbps",
                     RedirectStandardOutput = true,
+                    RedirectStandardError = true,
                     CreateNoWindow = true,
                 }
             };
@@ -38,16 +39,16 @@ namespace OutboundUp.SpeedTests.Ookla
             process.Start();
 
             var output = await process.StandardOutput.ReadToEndAsync();
-            _logger.LogInformation(output);
+
+            if (!JSONConvertors.IsStringValidJson(output))
+                throw new Exception("Ookla results is not valid JSON. An error likely occured during the speed test to cause this error.");
+
 
             var ooklaResult = JsonSerializer.Deserialize<OoklaTestResults>(output, options);
 
-            if (ooklaResult == null)
-                throw new Exception("Ookla results are empty!");
-
             var result = new SpeedTestResult
             {
-                UnixTimestampMs = ooklaResult.Timestamp.ToUnixTimeMilliseconds(),
+                UnixTimestampMs = ooklaResult!.Timestamp.ToUnixTimeMilliseconds(),
                 IsSuccess = true,
                 ServerHostName = ooklaResult.Server.Host,
                 DownloadSpeed = NumericConvertors.ConvertBpsToMbps(ooklaResult.Download.Bandwidth),
