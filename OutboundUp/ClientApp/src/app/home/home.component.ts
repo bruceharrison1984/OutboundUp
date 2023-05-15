@@ -1,14 +1,7 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { FetchDataService } from '../services/fetch-data.service';
-import {
-  Subscription,
-  interval,
-  retry,
-  startWith,
-  switchMap,
-  timer,
-} from 'rxjs';
-import { SpeedTestLine } from '../types/types';
+import { Subscription } from 'rxjs';
+import { SpeedTestLine, Statistics, StatisticsResponse } from '../types/types';
 import { REFRESH_INTERVAL } from '../app.module';
 import { pollingWithRetry } from '../utils';
 
@@ -19,14 +12,23 @@ import { pollingWithRetry } from '../utils';
 export class HomeComponent implements OnDestroy {
   bandwidthResults: SpeedTestLine[] = [];
   latencyResults: SpeedTestLine[] = [];
+  statistics?: Statistics;
   speedTestResultsInterval: Subscription;
+  statisticsInterval: Subscription;
 
   constructor(public speedTestResultService: FetchDataService) {
     this.speedTestResultsInterval = pollingWithRetry(REFRESH_INTERVAL, () =>
       speedTestResultService.getSpeedTestChartData()
     ).subscribe((results) => {
+      console.log('test');
       this.bandwidthResults = results.data.bandwidth;
       this.latencyResults = results.data.latency;
+    });
+
+    this.statisticsInterval = pollingWithRetry(REFRESH_INTERVAL, () =>
+      speedTestResultService.getStatistics()
+    ).subscribe((results) => {
+      this.statistics = results.data;
     });
   }
 

@@ -40,14 +40,15 @@ export interface RawSpeedTestResult {
 export interface HealthCheckResponse
   extends ApiResponse<{ isJobRunning: boolean }> {}
 
-export interface StatisticsResponse
-  extends ApiResponse<{
-    failedHealthChecks: number;
-    successfulHealthChecks: number;
-    averagePing: number;
-    averageDownloadSpeed: number;
-    averageUploadSpeed: number;
-  }> {}
+export interface StatisticsResponse extends ApiResponse<Statistics> {}
+
+export interface Statistics {
+  failedHealthChecks: number;
+  successfulHealthChecks: number;
+  averagePing: number;
+  averageDownloadSpeed: number;
+  averageUploadSpeed: number;
+}
 
 export type ApiResponse<T> = {
   data: T;

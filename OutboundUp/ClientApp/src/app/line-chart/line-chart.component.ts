@@ -1,11 +1,12 @@
 import { Component, Input } from '@angular/core';
 
 @Component({
-  selector: 'speed-test-chart',
-  templateUrl: './speed-test-chart.component.html',
+  selector: 'line-chart',
+  templateUrl: './line-chart.component.html',
 })
 export class SpeedTestChartComponent {
   @Input() data: any[] = [];
+  @Input() chartTitle: string = 'CHART TITLE';
 
   constructor() {
     Object.assign(this, { multi: this.data });

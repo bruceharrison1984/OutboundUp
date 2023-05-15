@@ -1,4 +1,55 @@
 <div class="mt-10 mb-10 space-y-10 items-center flex flex-col">
+  <div class="w-4/5 space-x-10 items-center flex flex-row">
+    <div class="card card-compact shadow-xl bg-base-100 flex-1">
+      <div class="card-body items-center">
+        <h2 class="card-title underline">Health Results</h2>
+        <progress
+          class="progress w-full"
+          *ngIf="
+            !statistics?.failedHealthChecks &&
+            !statistics?.successfulHealthChecks
+          "
+        ></progress>
+      </div>
+    </div>
+    <div class="card card-compact shadow-xl bg-base-100 flex-1">
+      <div class="card-body items-center">
+        <h2 class="card-title underline">Average Ping</h2>
+        <progress
+          class="progress w-full"
+          *ngIf="!statistics?.averagePing"
+        ></progress>
+        <span class="font-bold text-lg" *ngIf="statistics?.averagePing"
+          >{{ statistics?.averagePing }}ms
+        </span>
+      </div>
+    </div>
+    <div class="card card-compact shadow-xl bg-base-100 flex-1">
+      <div class="card-body items-center">
+        <h2 class="card-title underline">Average Download</h2>
+        <progress
+          class="progress w-full"
+          *ngIf="!statistics?.averageDownloadSpeed"
+        ></progress>
+        <span class="font-bold text-lg" *ngIf="statistics?.averageDownloadSpeed"
+          >{{ statistics?.averageDownloadSpeed }}mbps</span
+        >
+      </div>
+    </div>
+    <div class="card card-compact shadow-xl bg-base-100 flex-1">
+      <div class="card-body items-center">
+        <h2 class="card-title underline">Average Upload</h2>
+        <progress
+          class="progress w-full"
+          *ngIf="!statistics?.averageUploadSpeed"
+        ></progress>
+        <span class="font-bold text-lg" *ngIf="statistics?.averageUploadSpeed"
+          >{{ statistics?.averageUploadSpeed }}mbps</span
+        >
+      </div>
+    </div>
+  </div>
+
   <div class="card card-compact w-4/5 shadow-xl bg-base-100">
     <div class="card-body">
       <h2 class="card-title">Bandwidth</h2>
@@ -6,10 +57,10 @@
         class="progress w-full"
         *ngIf="!bandwidthResults.length"
       ></progress>
-      <speed-test-chart
+      <line-chart
         [data]="bandwidthResults"
         *ngIf="!!bandwidthResults.length"
-      ></speed-test-chart>
+      ></line-chart>
     </div>
   </div>
 
@@ -18,12 +69,12 @@
       <h2 class="card-title">Latency</h2>
       <progress
         class="progress w-full"
-        *ngIf="!bandwidthResults.length"
+        *ngIf="!latencyResults.length"
       ></progress>
-      <speed-test-chart
+      <line-chart
         [data]="latencyResults"
         *ngIf="!!latencyResults.length"
-      ></speed-test-chart>
+      ></line-chart>
     </div>
   </div>
 </div>

@@ -11,7 +11,7 @@ export const pollingWithRetry = <T>(
     retry({
       count: Infinity,
       delay: (error, count) => {
-        console.log(error);
+        // console.log(error);
         return timer(Math.min(60000, 2 ^ (count * REFRESH_INTERVAL)));
       },
     })
