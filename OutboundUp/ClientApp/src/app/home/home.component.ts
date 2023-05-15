@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FetchSpeedTestResultsService } from '../services/fetch-speed-test-results.service';
+import { FetchDataService } from '../services/fetch-data.service';
 import {
   Subscription,
   interval,
@@ -21,12 +21,12 @@ export class HomeComponent implements OnDestroy {
   latencyResults: SpeedTestLine[] = [];
   speedTestResultsInterval: Subscription;
 
-  constructor(public speedTestResultService: FetchSpeedTestResultsService) {
+  constructor(public speedTestResultService: FetchDataService) {
     this.speedTestResultsInterval = pollingWithRetry(REFRESH_INTERVAL, () =>
       speedTestResultService.getSpeedTestChartData()
     ).subscribe((results) => {
-      this.bandwidthResults = results.bandwidth;
-      this.latencyResults = results.latency;
+      this.bandwidthResults = results.data.bandwidth;
+      this.latencyResults = results.data.latency;
     });
   }
 

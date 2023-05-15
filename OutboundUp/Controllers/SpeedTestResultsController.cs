@@ -1,20 +1,20 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using OutboundUp.Database;
 using OutboundUp.Models;
-using OutboundUp.SpeedTests;
 
 namespace OutboundUp.Controllers
 {
-    public class SpeedTestResultsController : Controller
+    public class TestResultsController : Controller
     {
         private readonly OutboundUpDbContext _dbContext;
 
-        public SpeedTestResultsController(OutboundUpDbContext dbContext)
+        public TestResultsController(OutboundUpDbContext dbContext)
         {
             _dbContext = dbContext;
         }
 
-        public SpeedTestResultsResponse Index()
+        public ApiResponse<ChartData> ChartData()
         {
             var speedTestData = _dbContext.SpeedTestResults.OrderBy(x => x.UnixTimestampMs);
 
@@ -33,31 +33,31 @@ namespace OutboundUp.Controllers
             var uploadLatencyData = speedTestData.Select(x => new NgxLineChartSeriesData { Name = x.UnixTimestampMs, Value = x.UploadLatencyAverage, Max = x.UploadLatencyHigh, Min = x.UploadLatencyLow });
             var uploadLatencyLine = new NgxLineChartLine { Name = "Upload Latency", Series = uploadLatencyData };
 
-            return new SpeedTestResultsResponse(
-                new NgxLineChartLine[] { downloadSpeedLine, uploadSpeedLine },
-                new NgxLineChartLine[] { pingLine, downloadLatencyLine, uploadLatencyLine });
+            return new ApiResponse<ChartData>(new ChartData
+            {
+                Bandwidth = new NgxLineChartLine[] { downloadSpeedLine, uploadSpeedLine },
+                Latency = new NgxLineChartLine[] { pingLine, downloadLatencyLine, uploadLatencyLine }
+            });
         }
 
-        public RawSpeedTestResultsResponse Raw() => new RawSpeedTestResultsResponse(_dbContext.SpeedTestResults.OrderByDescending(x => x.Id));
+        public ApiResponse<IEnumerable<SpeedTestResult>> Raw() =>
+            new ApiResponse<IEnumerable<SpeedTestResult>>(_dbContext.SpeedTestResults.OrderByDescending(x => x.Id));
 
-        public class SpeedTestResultsResponse
+        public async Task<ApiResponse<Statistics>> Statistics()
         {
-            public SpeedTestResultsResponse(IEnumerable<NgxLineChartLine> bandwidthData, IEnumerable<NgxLineChartLine> latencyData)
-            {
-                Bandwidth = bandwidthData;
-                Latency = latencyData;
-            }
-            public IEnumerable<NgxLineChartLine> Bandwidth { get; set; }
-            public IEnumerable<NgxLineChartLine> Latency { get; set; }
-        }
+            var baseQuery = _dbContext.SpeedTestResults.OrderByDescending(x => x.Id).Take(50);
 
-        public class RawSpeedTestResultsResponse
-        {
-            public RawSpeedTestResultsResponse(IEnumerable<SpeedTestResult> data)
+            var statistics = new Statistics
             {
-                Data = data;
-            }
-            public IEnumerable<SpeedTestResult> Data { get; set; }
+                AverageDownloadSpeed = Math.Round(await baseQuery.AverageAsync(x => x.DownloadSpeed)),
+                AverageUploadSpeed = Math.Round(await baseQuery.AverageAsync(x => x.UploadSpeed)),
+                FailedHealthChecks = await baseQuery.CountAsync(x => !x.IsSuccess),
+                SuccessfulHealthChecks = await baseQuery.CountAsync(x => x.IsSuccess),
+                AveragePing = Math.Round(await baseQuery.AverageAsync(x => x.PingAverage), 2)
+            };
+
+            return new ApiResponse<Statistics>(statistics);
         }
     }
 }
+

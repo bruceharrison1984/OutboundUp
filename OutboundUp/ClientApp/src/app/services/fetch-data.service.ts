@@ -3,12 +3,13 @@ import { Inject, Injectable } from '@angular/core';
 import {
   RawSpeedTestResultsResponse,
   SpeedTestResultsResponse,
+  StatisticsResponse,
 } from '../types/types';
 
 @Injectable({
   providedIn: 'root',
 })
-export class FetchSpeedTestResultsService {
+export class FetchDataService {
   constructor(
     protected http: HttpClient,
     @Inject('BASE_URL') protected baseUrl: string
@@ -16,13 +17,19 @@ export class FetchSpeedTestResultsService {
 
   getSpeedTestChartData() {
     return this.http.get<SpeedTestResultsResponse>(
-      this.baseUrl + 'speedtestresults'
+      this.baseUrl + 'TestResults/ChartData'
     );
   }
 
   getRawSpeedTestData() {
     return this.http.get<RawSpeedTestResultsResponse>(
-      this.baseUrl + 'speedtestresults/raw'
+      this.baseUrl + 'TestResults/Raw'
+    );
+  }
+
+  getStatistics() {
+    return this.http.get<StatisticsResponse>(
+      this.baseUrl + 'TestResults/Statistics'
     );
   }
 }

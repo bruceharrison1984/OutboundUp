@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using OutboundUp.Models;
 using Quartz;
 
 namespace OutboundUp.Controllers
@@ -12,17 +13,12 @@ namespace OutboundUp.Controllers
             _schedulerFactory = schedulerFactory;
         }
 
-        public async Task<HealthCheckResponse> Index()
+        public async Task<ApiResponse<HealthCheckData>> Index()
         {
             var scheduler = await _schedulerFactory.GetScheduler();
             var currentJobs = await scheduler.GetCurrentlyExecutingJobs();
 
-            return new HealthCheckResponse { IsJobRunning = currentJobs.Any() };
-        }
-
-        public class HealthCheckResponse
-        {
-            public bool IsJobRunning { get; set; } = false;
+            return new ApiResponse<HealthCheckData>(new HealthCheckData { IsJobRunning = currentJobs.Any() });
         }
     }
 }

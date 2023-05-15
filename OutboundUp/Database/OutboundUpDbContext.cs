@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using OutboundUp.SpeedTests;
+using OutboundUp.Models;
 
 namespace OutboundUp.Database
 {
@@ -12,6 +12,19 @@ namespace OutboundUp.Database
         protected override void OnConfiguring(DbContextOptionsBuilder options)
             => options.UseSqlite($"Data Source={DbPath}");
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<OutboundWebHook>()
+                .HasMany(x => x.Results)
+                .WithOne(x => x.WebHook)
+                .HasForeignKey(x => x.Id)
+                .HasPrincipalKey(x => x.Id);
+        }
+
         public DbSet<SpeedTestResult> SpeedTestResults { get; set; }
+        public DbSet<OutboundWebHook> OutboundWebHooks { get; set; }
+        public DbSet<OutboundWebhookResult> OutboundWebHookResult { get; set; }
+
+
     }
 }

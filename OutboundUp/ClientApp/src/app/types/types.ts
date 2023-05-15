@@ -1,7 +1,8 @@
-export interface SpeedTestResultsResponse {
-  bandwidth: SpeedTestLine[];
-  latency: SpeedTestLine[];
-}
+export interface SpeedTestResultsResponse
+  extends ApiResponse<{
+    bandwidth: SpeedTestLine[];
+    latency: SpeedTestLine[];
+  }> {}
 
 export interface SpeedTestLine {
   name: string;
@@ -15,9 +16,8 @@ export interface NgxLineChartSeriesData {
   max: number;
 }
 
-export interface RawSpeedTestResultsResponse {
-  data: RawSpeedTestResult[];
-}
+export interface RawSpeedTestResultsResponse
+  extends ApiResponse<RawSpeedTestResult[]> {}
 
 export interface RawSpeedTestResult {
   id: number;
@@ -37,6 +37,19 @@ export interface RawSpeedTestResult {
   uploadLatencyLow: number;
 }
 
-export interface HealthCheckResult {
-  isJobRunning: boolean;
-}
+export interface HealthCheckResponse
+  extends ApiResponse<{ isJobRunning: boolean }> {}
+
+export interface StatisticsResponse
+  extends ApiResponse<{
+    failedHealthChecks: number;
+    successfulHealthChecks: number;
+    averagePing: number;
+    averageDownloadSpeed: number;
+    averageUploadSpeed: number;
+  }> {}
+
+export type ApiResponse<T> = {
+  data: T;
+  errors: string[];
+};

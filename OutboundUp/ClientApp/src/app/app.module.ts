@@ -26,7 +26,7 @@ export const REFRESH_INTERVAL = 5000;
     HttpClientModule,
     FormsModule,
     RouterModule.forRoot([
-      { path: '', component: HomeComponent, pathMatch: 'full' },
+      { path: '', component: HomeComponent },
       { path: 'fetch-data', component: FetchDataComponent },
     ]),
     NgxChartsModule,

@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using OutboundUp.Database;
 using OutboundUp.Jobs;
+using OutboundUp.Services;
 using OutboundUp.SpeedTests.Ookla;
 using Quartz;
 
@@ -40,6 +41,7 @@ namespace OutboundUp
             builder.Services.AddControllersWithViews()
                 .AddJsonOptions(x => x.JsonSerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull);
             builder.Services.AddHttpClient();
+            builder.Services.AddTransient<IWebHookService, OutboundWebHookService>();
             builder.Services.AddTransient<SpeedTestJob>();
             builder.Services.AddTransient<OoklaSpeedTest>();
             builder.Services.AddCors();

@@ -1,5 +1,6 @@
 ﻿using OutboundUp.Database;
-using OutboundUp.SpeedTests;
+using OutboundUp.Models;
+using OutboundUp.Services;
 using OutboundUp.SpeedTests.Ookla;
 using Quartz;
 
@@ -9,13 +10,15 @@ namespace OutboundUp.Jobs
     {
         private readonly OoklaSpeedTest _speedtestClient;
         private readonly OutboundUpDbContext _dbContext;
-        private readonly ILogger<SpeedTestJob> logger;
+        private readonly IWebHookService _webhookService;
+        private readonly ILogger<SpeedTestJob> _logger;
 
-        public SpeedTestJob(OoklaSpeedTest speedtestClient, OutboundUpDbContext dbContext, ILogger<SpeedTestJob> logger)
+        public SpeedTestJob(OoklaSpeedTest speedtestClient, OutboundUpDbContext dbContext, IWebHookService webhookService, ILogger<SpeedTestJob> logger)
         {
             _speedtestClient = speedtestClient;
             _dbContext = dbContext;
-            this.logger = logger;
+            _webhookService = webhookService;
+            _logger = logger;
         }
 
         public async Task Execute(IJobExecutionContext context)
@@ -26,10 +29,12 @@ namespace OutboundUp.Jobs
 
                 await _dbContext.SpeedTestResults.AddAsync(output);
                 await _dbContext.SaveChangesAsync();
+
+                await _webhookService.SendResultsToWebHooks(output, context.CancellationToken);
             }
             catch (Exception e)
             {
-                logger.LogError(e, $"SpeedTest failed");
+                _logger.LogError(e, $"SpeedTest failed to complete");
                 await _dbContext.SpeedTestResults.AddAsync(new SpeedTestResult
                 {
                     UnixTimestampMs = DateTimeOffset.Now.ToUnixTimeMilliseconds(),

@@ -8,14 +8,14 @@ import {
   switchMap,
   timer,
 } from 'rxjs';
-import { HealthCheckResult } from '../types/types';
+import { HealthCheckResponse } from '../types/types';
 
 @Component({
   selector: 'app-nav-menu',
   templateUrl: './nav-menu.component.html',
 })
 export class NavMenuComponent {
-  healthCheckResult: HealthCheckResult | undefined;
+  healthCheckResult: HealthCheckResponse | undefined;
   statusMessage?: string;
   healthCheckResultsInterval: Subscription;
 
@@ -36,7 +36,7 @@ export class NavMenuComponent {
       .subscribe((results) => {
         this.healthCheckResult = results;
 
-        if (results.isJobRunning) {
+        if (results.data.isJobRunning) {
           this.statusMessage =
             'API connection is healthy\nSpeed test currently running';
         } else {

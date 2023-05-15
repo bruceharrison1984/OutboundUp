@@ -35,7 +35,7 @@
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 24 24"
       ngClass="w-6 h-6 {{
-        healthCheckResult?.isJobRunning ? 'animate-spin' : null
+        healthCheckResult?.data?.isJobRunning ? 'animate-spin' : null
       }} {{ healthCheckResult ? 'fill-green-600' : 'fill-red-600' }}"
     >
       <title>{{ statusMessage }}</title>

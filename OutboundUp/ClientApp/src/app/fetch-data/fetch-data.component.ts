@@ -7,7 +7,7 @@ import {
   switchMap,
   timer,
 } from 'rxjs';
-import { FetchSpeedTestResultsService } from '../services/fetch-speed-test-results.service';
+import { FetchDataService } from '../services/fetch-data.service';
 import { RawSpeedTestResult } from '../types/types';
 import { REFRESH_INTERVAL } from '../app.module';
 import { pollingWithRetry } from '../utils';
@@ -20,11 +20,11 @@ export class FetchDataComponent implements OnDestroy {
   speedTestResults: RawSpeedTestResult[] = [];
   speedTestResultsInterval: Subscription;
 
-  constructor(public speedTestResultService: FetchSpeedTestResultsService) {
+  constructor(public speedTestResultService: FetchDataService) {
     this.speedTestResultsInterval = pollingWithRetry(REFRESH_INTERVAL, () =>
       speedTestResultService.getRawSpeedTestData()
     ).subscribe((results) => {
-      this.speedTestResults = results.data;
+      this.speedTestResults = results.data; //TODO fix this data.data
     });
   }
 

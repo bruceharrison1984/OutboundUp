@@ -1,4 +1,6 @@
-﻿namespace OutboundUp.SpeedTests
+﻿using OutboundUp.Models;
+
+namespace OutboundUp.SpeedTests
 {
     public interface IOoklaSpeedTest
     {

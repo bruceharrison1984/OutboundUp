@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Inject, Injectable } from '@angular/core';
-import { HealthCheckResult } from '../types/types';
+import { HealthCheckResponse } from '../types/types';
 
 @Injectable({
   providedIn: 'root',
@@ -12,6 +12,6 @@ export class FetchHealthCheckService {
   ) {}
 
   getHealthCheck() {
-    return this.http.get<HealthCheckResult>(this.baseUrl + 'healthCheck');
+    return this.http.get<HealthCheckResponse>(this.baseUrl + 'healthCheck');
   }
 }

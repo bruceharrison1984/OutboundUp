@@ -1,4 +1,4 @@
-﻿namespace OutboundUp.SpeedTests
+﻿namespace OutboundUp.Models
 {
     public class SpeedTestResult
     {
