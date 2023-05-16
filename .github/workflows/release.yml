@@ -21,5 +21,7 @@ jobs:
           dotnet-version: 6.0.x
       - name: Restore dependencies
         run: dotnet restore
-      - name: Publish
-        run: dotnet publish --configuration=Release --no-restore
+      # - name: Publish
+      #   run: dotnet publish --configuration=Release --no-restore
+      - name: Docker Build
+        run: docker build -f ./OutboundUp/Dockerfile .
