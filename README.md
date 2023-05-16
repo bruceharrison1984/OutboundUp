@@ -23,3 +23,7 @@ OuboundUp is a real-time, outbound internet connection monitor and speed tester.
 
 ## Access the UI through http://localhost:80
 ```
+
+## Web Hooks
+
+Generic webhooks are supported and allow you to make POST requests to a given endpoint after each Speed Test has concluded. The body of the request will contain the JSON encoded results of the speed test.
