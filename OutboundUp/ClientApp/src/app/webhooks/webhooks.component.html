@@ -1,24 +1,34 @@
 <input type="checkbox" id="my-modal" class="modal-toggle" />
-<div class="modal">
-  <div class="modal-box">
+<div [ngClass]="createModalClasses">
+  <div class="modal-box" (submit)="createWebHook()">
     <h3 class="font-bold text-lg">Create New Webhook</h3>
-    <form class="mt-5">
+    <form class="mt-5" [formGroup]="formGroup">
       <div class="form-control w-full">
         <label class="label">
           <span class="label-text">Target Url</span>
         </label>
         <input
           type="text"
-          placeholder="Type here"
+          placeholder="https://my-webhook-host/endpoint"
           class="input input-sm input-bordered w-full"
+          formControlName="targetUrl"
+          required
         />
       </div>
-    </form>
 
-    <div class="modal-action">
-      <label for="my-modal" class="btn btn-sm">Create</label>
-      <label for="my-modal" class="btn btn-sm btn-secondary">Cancel</label>
-    </div>
+      <div class="modal-action">
+        <button class="btn btn-sm" type="submit" [disabled]="formGroup.invalid">
+          Create
+        </button>
+        <button
+          class="btn btn-sm btn-secondary"
+          type="reset"
+          (click)="closeCreateModal()"
+        >
+          Cancel
+        </button>
+      </div>
+    </form>
   </div>
 </div>
 
@@ -28,13 +38,13 @@
       <h2 class="card-title flex">
         <span class="underline">WebHooks</span>
         <div class="flex-1"></div>
-        <label
-          for="my-modal"
+        <button
           class="btn btn-primary btn-sm"
           title="Add Webhook"
+          (click)="showCreateModal()"
         >
           Create WebHook
-        </label>
+        </button>
       </h2>
       <span class="w-full" *ngIf="!webhooks?.length"
         >No Webhooks have been registered</span
