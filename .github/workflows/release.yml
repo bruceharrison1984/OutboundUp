@@ -43,4 +43,4 @@ jobs:
           push: false
           file: ./OutboundUp/Dockerfile
           tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          labels: ${{ steps.meta.outputs.labels }},latest
