@@ -1,6 +1,7 @@
 # OutboundUp
 
-![Screenshot](outboundup-screenshot.png)
+![Home Screen](homescreen-preview.png)
+![Raw Data](rawdata-preview.png)
 
 ## Description
 
@@ -43,6 +44,8 @@ OuboundUp is a real-time, outbound internet connection monitor and speed tester.
 ```
 
 ## Web Hooks
+
+![Web Hooks](webhooks-preview.png)
 
 Generic webhooks are supported and allow you to make POST requests to a given endpoint after each Speed Test has concluded. The body of the request will contain the JSON encoded results of the speed test.
 
