@@ -14,12 +14,21 @@ OuboundUp is a real-time, outbound internet connection monitor and speed tester.
 
 ## Docker
 
+### Pull pre-built from Github Packages
+
+```sh
+> docker pull ghcr.io/bruceharrison1984/outboundup:latest
+> docker run -d -p 8080:80 outboundup
+```
+
+### Build image locally from source
+
 ```sh
 ## Run from the repo root directory to build the container locally
-> docker build -f OutboundUp/Dockerfile . -t outbound-up` .
+> docker build -f OutboundUp/Dockerfile . -t outboundup` .
 
 ## Run the container
-> docker run -d -p 8080:80 outbound-up
+> docker run -d -p 8080:80 outboundup
 
 ## Access the UI through http://localhost:80
 ```
