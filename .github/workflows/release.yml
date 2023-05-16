@@ -42,5 +42,5 @@ jobs:
           context: .
           push: false
           file: ./OutboundUp/Dockerfile
-          tags: ${{ steps.meta.outputs.tags }},${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+          tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
