@@ -56,6 +56,14 @@ export interface Statistics {
   averageUploadSpeed: number;
 }
 
+export interface WebHookListResponse extends ApiResponse<OutboundWebHook[]> {}
+
+export interface OutboundWebHook {
+  id: number;
+  targetUrl: string;
+  httpMethod: string;
+}
+
 export type ApiResponse<T> = {
   data: T;
   errors: string[];

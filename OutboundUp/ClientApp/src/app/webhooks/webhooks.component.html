@@ -1,0 +1,51 @@
+<input type="checkbox" id="my-modal" class="modal-toggle" />
+<div class="modal">
+  <div class="modal-box">
+    <h3 class="font-bold text-lg">Create New Webhook</h3>
+    <p class="py-4">
+      You've been selected for a chance to get one year of subscription to use
+      Wikipedia for free!
+    </p>
+    <div class="modal-action">
+      <label for="my-modal" class="btn">Yay!</label>
+    </div>
+  </div>
+</div>
+
+<div class="mt-10 mb-10 space-y-10 items-center flex flex-col">
+  <div class="card card-compact w-4/5 shadow-xl bg-base-100">
+    <div class="card-body max-h-[50em]">
+      <h2 class="card-title flex">
+        <span class="underline">WebHooks</span>
+        <div class="flex-1"></div>
+        <label for="my-modal" class="btn btn-primary" title="Add Webhook">
+          Create WebHook
+        </label>
+      </h2>
+      <span class="w-full" *ngIf="!webhooks?.length"
+        >No Webhooks have been registered</span
+      >
+      <div class="overflow-x-auto" *ngIf="webhooks?.length">
+        <table
+          class="table w-full table-zebra table-compact"
+          aria-labelledby="tableLabel"
+        >
+          <thead>
+            <tr>
+              <th>Id</th>
+              <th>Target Url</th>
+              <th>HTTP Method</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="hover" *ngFor="let result of webhooks">
+              <th>{{ result.id }}</th>
+              <td>{{ result.targetUrl }}</td>
+              <td>{{ result.httpMethod }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

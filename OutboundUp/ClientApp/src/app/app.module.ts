@@ -11,6 +11,7 @@ import { SpeedTestChartComponent } from './line-chart/line-chart.component';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
+import { WebHooksComponent } from './webhooks/webhooks.component';
 
 export const REFRESH_INTERVAL = 5000;
 
@@ -21,6 +22,7 @@ export const REFRESH_INTERVAL = 5000;
     HomeComponent,
     FetchDataComponent,
     SpeedTestChartComponent,
+    WebHooksComponent,
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -30,7 +32,8 @@ export const REFRESH_INTERVAL = 5000;
     RouterModule.forRoot(
       [
         { path: '', component: HomeComponent },
-        { path: 'fetch-data', component: FetchDataComponent },
+        { path: 'raw-data', component: FetchDataComponent },
+        { path: 'webhooks', component: WebHooksComponent },
       ],
       { useHash: true }
     ),
