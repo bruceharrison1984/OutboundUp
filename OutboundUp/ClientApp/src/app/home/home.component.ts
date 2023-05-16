@@ -34,8 +34,9 @@ export class HomeComponent implements OnDestroy {
       this.statistics = results.data;
       this.successRate = Math.round(
         (results.data.successfulHealthChecks /
-          results.data.failedHealthChecks) *
-          10
+          (results.data.successfulHealthChecks +
+            results.data.failedHealthChecks)) *
+          100
       );
     });
   }

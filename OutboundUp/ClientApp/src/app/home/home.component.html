@@ -3,18 +3,8 @@
     <div class="card card-compact shadow-xl bg-base-100 flex-1">
       <div class="card-body items-center">
         <h2 class="card-title underline">Success Rate</h2>
-        <progress
-          class="progress w-full"
-          *ngIf="
-            !statistics?.failedHealthChecks &&
-            !statistics?.successfulHealthChecks
-          "
-        ></progress>
-        <span
-          class="font-bold text-4xl"
-          *ngIf="
-            statistics?.failedHealthChecks && statistics?.successfulHealthChecks
-          "
+        <progress class="progress w-full" *ngIf="!successRate"></progress>
+        <span class="font-bold text-4xl" *ngIf="successRate"
           >{{ successRate }}%
         </span>
       </div>

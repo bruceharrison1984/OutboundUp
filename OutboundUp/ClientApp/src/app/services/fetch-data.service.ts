@@ -21,9 +21,10 @@ export class FetchDataService {
     );
   }
 
-  getRawSpeedTestData() {
+  getRawSpeedTestData(pageNumber: number, pageSize: number) {
     return this.http.get<RawSpeedTestResultsResponse>(
-      this.baseUrl + 'TestResults/Raw'
+      this.baseUrl +
+        `TestResults/Raw?pageNumber=${pageNumber}&pageSize=${pageSize}`
     );
   }
 

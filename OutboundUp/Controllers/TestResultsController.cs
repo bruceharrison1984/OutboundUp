@@ -40,8 +40,20 @@ namespace OutboundUp.Controllers
             });
         }
 
-        public ApiResponse<IEnumerable<SpeedTestResult>> Raw() =>
-            new ApiResponse<IEnumerable<SpeedTestResult>>(_dbContext.SpeedTestResults.OrderByDescending(x => x.Id));
+        public async Task<ApiResponse<DataTableResults>> Raw(int pageNumber = 0, int pageSize = 10)
+        {
+            var data = _dbContext.SpeedTestResults.OrderByDescending(x => x.Id).Skip(pageNumber * pageSize).Take(pageSize);
+            var totalCount = await _dbContext.SpeedTestResults.CountAsync();
+
+            var response = new DataTableResults
+            {
+                TotalCount = totalCount,
+                TableData = data,
+                CurrentPage = pageNumber,
+            };
+
+            return new ApiResponse<DataTableResults>(response);
+        }
 
         public async Task<ApiResponse<Statistics>> Statistics()
         {
@@ -57,6 +69,13 @@ namespace OutboundUp.Controllers
             };
 
             return new ApiResponse<Statistics>(statistics);
+        }
+
+        public class DataTableResults
+        {
+            public int TotalCount { get; set; }
+            public int CurrentPage { get; set; }
+            public IEnumerable<SpeedTestResult> TableData { get; set; }
         }
     }
 }

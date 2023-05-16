@@ -17,7 +17,13 @@ export interface NgxLineChartSeriesData {
 }
 
 export interface RawSpeedTestResultsResponse
-  extends ApiResponse<RawSpeedTestResult[]> {}
+  extends ApiResponse<RawTableData> {}
+
+export interface RawTableData {
+  totalCount: number;
+  tableData: RawSpeedTestResult[];
+  currentPage: number;
+}
 
 export interface RawSpeedTestResult {
   id: number;

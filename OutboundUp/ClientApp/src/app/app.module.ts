@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
@@ -10,6 +10,7 @@ import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { SpeedTestChartComponent } from './line-chart/line-chart.component';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 
 export const REFRESH_INTERVAL = 5000;
 
@@ -25,10 +26,14 @@ export const REFRESH_INTERVAL = 5000;
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
     FormsModule,
-    RouterModule.forRoot([
-      { path: '', component: HomeComponent },
-      { path: 'fetch-data', component: FetchDataComponent },
-    ]),
+    ReactiveFormsModule,
+    RouterModule.forRoot(
+      [
+        { path: '', component: HomeComponent },
+        { path: 'fetch-data', component: FetchDataComponent },
+      ],
+      { useHash: true }
+    ),
     NgxChartsModule,
     BrowserAnimationsModule,
   ],

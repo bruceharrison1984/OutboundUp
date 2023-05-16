@@ -1,12 +1,42 @@
 <div class="mt-10 mb-10 space-y-10 items-center flex flex-col">
   <div class="card card-compact w-4/5 shadow-xl bg-base-100">
-    <div class="card-body">
-      <h2 class="card-title">Raw Data</h2>
+    <div class="card-body max-h-[50em]">
+      <h2 class="card-title flex">
+        <span class="underline">Raw Data</span>
+        <div class="flex-1"></div>
+        <div class="form-control max-w-sm">
+          <select
+            title="Page Number"
+            #selectedPageNumber
+            [value]="pageSize"
+            (change)="onPageNumberChange(selectedPageNumber.value)"
+            class="select select-sm select-info"
+          >
+            <option *ngFor="let page of pages">{{ page.toString() }}</option>
+          </select>
+        </div>
+        <div class="form-control max-w-sm">
+          <select
+            title="Page Size"
+            #selectedPageSize
+            [value]="pageSize"
+            (change)="onPageSizeChange(selectedPageSize.value)"
+            class="select select-info select-sm"
+          >
+            <option>10</option>
+            <option>25</option>
+            <option>50</option>
+          </select>
+        </div>
+        <span class="badge badge-lg flex-none"
+          >Total Records: {{ speedTestResults?.totalCount }}</span
+        >
+      </h2>
       <progress
         class="progress w-full"
-        *ngIf="!speedTestResults.length"
+        *ngIf="!speedTestResults?.tableData?.length"
       ></progress>
-      <div class="overflow-x-auto" *ngIf="speedTestResults.length">
+      <div class="overflow-x-auto" *ngIf="speedTestResults?.tableData?.length">
         <table
           class="table w-full table-zebra table-compact"
           aria-labelledby="tableLabel"
@@ -31,8 +61,11 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let result of speedTestResults">
-              <td>{{ result.id }}</td>
+            <tr
+              class="hover"
+              *ngFor="let result of speedTestResults?.tableData"
+            >
+              <th>{{ result.id }}</th>
               <td>{{ result.timestamp }}</td>
               <td>{{ result.isSuccess }}</td>
               <td>{{ result.serverHostName }}</td>
