@@ -14,21 +14,26 @@ namespace OutboundUp.Controllers
             _dbContext = dbContext;
         }
 
+        [HttpGet]
         public async Task<ApiResponse<IEnumerable<OutboundWebHook>>> Index(CancellationToken cancellationToken)
         {
-            var results = await _dbContext.OutboundWebHooks.Include(x => x.Results.Take(50)).ToListAsync(cancellationToken);
+            var results = _dbContext.OutboundWebHooks
+                .OrderBy(x => x.Id)
+                .Include(x => x.Results.OrderByDescending(x => x.Id).Take(1));
             return new ApiResponse<IEnumerable<OutboundWebHook>>(results);
         }
 
-        public async Task<IActionResult> Post(CreateWebHookRequest req, CancellationToken cancellationToken)
+        [HttpPost]
+        public async Task<IActionResult> Index([FromBody] CreateWebHookRequest req, CancellationToken cancellationToken)
         {
-            await _dbContext.AddAsync(new OutboundWebHook { TargetUrl = req.TargetUrl });
+            await _dbContext.OutboundWebHooks.AddAsync(new OutboundWebHook { TargetUrl = req.TargetUrl });
             await _dbContext.SaveChangesAsync(cancellationToken);
 
             return Ok();
         }
 
-        public async Task<IActionResult> Delete(int id, CancellationToken cancellationToken)
+        [HttpDelete]
+        public async Task<IActionResult> Index(int id, CancellationToken cancellationToken)
         {
             await _dbContext.OutboundWebHooks.Where(x => x.Id == id).ExecuteDeleteAsync(cancellationToken);
 

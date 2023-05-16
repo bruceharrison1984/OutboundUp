@@ -4,6 +4,7 @@ using OutboundUp.Jobs;
 using OutboundUp.Services;
 using OutboundUp.SpeedTests.Ookla;
 using Quartz;
+using System.Text.Json.Serialization;
 
 namespace OutboundUp
 {
@@ -33,13 +34,26 @@ namespace OutboundUp
                     .WithIdentity("SpeedTestJob-Trigger")
                     .WithCronSchedule("0 * * ? * *")
                 );
+
+                var cleanupJobKey = new JobKey("DataCleanupJob");
+                q.AddJob<DataCleanupJob>(opts => opts.WithIdentity(cleanupJobKey));
+
+                q.AddTrigger(opts => opts
+                    .ForJob(cleanupJobKey)
+                    .WithIdentity("DataCleanupJob-Trigger")
+                    .WithCronSchedule("0 0 0 ? * *") // run every midnight to clean up data
+                );
             });
             builder.Services.AddQuartzServer(q =>
                 {
                     q.WaitForJobsToComplete = true;
                 });
             builder.Services.AddControllersWithViews()
-                .AddJsonOptions(x => x.JsonSerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull);
+                .AddJsonOptions(x =>
+                {
+                    x.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+                    x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+                });
             builder.Services.AddHttpClient();
             builder.Services.AddTransient<IWebHookService, OutboundWebHookService>();
             builder.Services.AddTransient<SpeedTestJob>();

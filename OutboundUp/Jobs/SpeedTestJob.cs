@@ -27,14 +27,14 @@ namespace OutboundUp.Jobs
             {
                 var output = await _speedtestClient.RunSpeedTest();
 
-                await _dbContext.SpeedTestResults.AddAsync(output);
+                var dbItem = await _dbContext.SpeedTestResults.AddAsync(output);
                 await _dbContext.SaveChangesAsync();
 
-                await _webhookService.SendResultsToWebHooks(output, context.CancellationToken);
+                await _webhookService.SendResultsToWebHooks(dbItem.Entity, context.CancellationToken);
             }
             catch (Exception e)
             {
-                _logger.LogError(e, $"SpeedTest failed to complete");
+                _logger.LogError(e, "Exception occured while running SpeedTest job");
                 await _dbContext.SpeedTestResults.AddAsync(new SpeedTestResult
                 {
                     UnixTimestampMs = DateTimeOffset.Now.ToUnixTimeMilliseconds(),

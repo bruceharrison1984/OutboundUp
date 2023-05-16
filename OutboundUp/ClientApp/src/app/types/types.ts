@@ -62,6 +62,14 @@ export interface OutboundWebHook {
   id: number;
   targetUrl: string;
   httpMethod: string;
+  results: OutboundWebHookResult[];
+}
+
+export interface OutboundWebHookResult {
+  id: number;
+  responseCode: number;
+  responseBody: string;
+  isSuccess: boolean;
 }
 
 export type ApiResponse<T> = {

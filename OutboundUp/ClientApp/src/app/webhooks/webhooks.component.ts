@@ -1,10 +1,17 @@
 import { Component, OnDestroy } from '@angular/core';
 import { WebHooksService } from '../services/webhooks.service';
-import { Subscription } from 'rxjs';
+import { Subscription, take } from 'rxjs';
 import { pollingWithRetry } from '../utils';
 import { REFRESH_INTERVAL } from '../app.module';
 import { OutboundWebHook } from '../types/types';
-import { FormControl, FormGroup } from '@angular/forms';
+import {
+  AbstractControl,
+  FormControl,
+  FormGroup,
+  ValidationErrors,
+  ValidatorFn,
+  Validators,
+} from '@angular/forms';
 
 @Component({
   selector: 'webhooks',
@@ -15,7 +22,9 @@ export class WebHooksComponent implements OnDestroy {
   webhooksListInterval: Subscription;
   createModalClasses = ['modal'];
 
-  formGroup: FormGroup = new FormGroup({ targetUrl: new FormControl('') });
+  formGroup: FormGroup = new FormGroup({
+    targetUrl: new FormControl('', WebHooksComponent.validateUrl),
+  });
 
   constructor(public webhookService: WebHooksService) {
     this.webhooksListInterval = pollingWithRetry(REFRESH_INTERVAL, () =>
@@ -28,7 +37,12 @@ export class WebHooksComponent implements OnDestroy {
   ngOnDestroy(): void {}
 
   createWebHook() {
-    console.log(this.formGroup.invalid);
+    this.webhookService
+      .createWebHook(this.formGroup.value.targetUrl)
+      .pipe(take(1))
+      .subscribe((x) => {
+        this.closeCreateModal();
+      });
   }
 
   showCreateModal() {
@@ -41,4 +55,16 @@ export class WebHooksComponent implements OnDestroy {
       (x) => x !== 'modal-open'
     );
   }
+
+  static validateUrl: ValidatorFn = (
+    control: AbstractControl
+  ): ValidationErrors | null => {
+    try {
+      let str = control.value;
+      new URL(str);
+      return null;
+    } catch (_) {
+      return { invalidUrl: true };
+    }
+  };
 }

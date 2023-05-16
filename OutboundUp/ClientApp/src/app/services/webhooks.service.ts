@@ -14,4 +14,10 @@ export class WebHooksService {
   getWebHooks() {
     return this.http.get<WebHookListResponse>(this.baseUrl + 'WebHook');
   }
+
+  createWebHook(targetUrl: string) {
+    return this.http.post(this.baseUrl + 'WebHook', {
+      TargetUrl: targetUrl,
+    });
+  }
 }

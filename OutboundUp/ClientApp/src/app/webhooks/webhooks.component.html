@@ -2,6 +2,11 @@
 <div [ngClass]="createModalClasses">
   <div class="modal-box" (submit)="createWebHook()">
     <h3 class="font-bold text-lg">Create New Webhook</h3>
+    <p>
+      A request can be sent out to a webhook every time a speed test completes.
+      The body is the SpeedTestResult data that can be viewed on the Raw Data
+      page.
+    </p>
     <form class="mt-5" [formGroup]="formGroup">
       <div class="form-control w-full">
         <label class="label">
@@ -59,6 +64,9 @@
               <th>Id</th>
               <th>Target Url</th>
               <th>HTTP Method</th>
+              <th>Last Run Succeeded</th>
+              <th>Last Run Response Body</th>
+              <th>Last Run Status Code</th>
             </tr>
           </thead>
           <tbody>
@@ -66,6 +74,9 @@
               <th>{{ result.id }}</th>
               <td>{{ result.targetUrl }}</td>
               <td>{{ result.httpMethod }}</td>
+              <td>{{ result.results[0].isSuccess }}</td>
+              <td>{{ result.results[0].responseBody }}</td>
+              <td>{{ result.results[0].responseCode }}</td>
             </tr>
           </tbody>
         </table>

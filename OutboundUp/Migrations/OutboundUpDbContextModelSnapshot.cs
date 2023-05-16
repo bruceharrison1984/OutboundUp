@@ -27,7 +27,6 @@ namespace OutboundUp.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("TargetUrl")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -38,6 +37,7 @@ namespace OutboundUp.Migrations
             modelBuilder.Entity("OutboundUp.Models.OutboundWebhookResult", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
                     b.Property<bool>("IsSuccess")
@@ -52,9 +52,14 @@ namespace OutboundUp.Migrations
                     b.Property<int>("SpeedTestResultId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("WebhookId")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("Id");
 
                     b.HasIndex("SpeedTestResultId");
+
+                    b.HasIndex("WebhookId");
 
                     b.ToTable("OutboundWebHookResult");
                 });
@@ -114,15 +119,15 @@ namespace OutboundUp.Migrations
 
             modelBuilder.Entity("OutboundUp.Models.OutboundWebhookResult", b =>
                 {
-                    b.HasOne("OutboundUp.Models.OutboundWebHook", "WebHook")
-                        .WithMany("Results")
-                        .HasForeignKey("Id")
+                    b.HasOne("OutboundUp.Models.SpeedTestResult", "SpeedTestResult")
+                        .WithMany("OutboundWebhookResults")
+                        .HasForeignKey("SpeedTestResultId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("OutboundUp.Models.SpeedTestResult", "SpeedTestResult")
-                        .WithMany()
-                        .HasForeignKey("SpeedTestResultId")
+                    b.HasOne("OutboundUp.Models.OutboundWebHook", "WebHook")
+                        .WithMany("Results")
+                        .HasForeignKey("WebhookId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -134,6 +139,11 @@ namespace OutboundUp.Migrations
             modelBuilder.Entity("OutboundUp.Models.OutboundWebHook", b =>
                 {
                     b.Navigation("Results");
+                });
+
+            modelBuilder.Entity("OutboundUp.Models.SpeedTestResult", b =>
+                {
+                    b.Navigation("OutboundWebhookResults");
                 });
 #pragma warning restore 612, 618
         }

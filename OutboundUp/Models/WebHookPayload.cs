@@ -1,7 +1,25 @@
 ﻿namespace OutboundUp.Models
 {
-    public class SpeedTestResult
+    public class WebHookPayload
     {
+        public WebHookPayload(SpeedTestResult result)
+        {
+            Id = result.Id;
+            UnixTimestampMs = result.UnixTimestampMs;
+            IsSuccess = result.IsSuccess;
+            ServerHostName = result.ServerHostName;
+            UploadLatencyAverage = result.UploadLatencyAverage;
+            UploadLatencyHigh = result.UploadLatencyHigh;
+            UploadLatencyLow = result.UploadLatencyLow;
+            DownloadLatencyAverage = result.DownloadLatencyAverage;
+            DownloadLatencyHigh = result.DownloadLatencyHigh;
+            DownloadLatencyLow = result.DownloadLatencyLow;
+            PingAverage = result.PingAverage;
+            PingHigh = result.PingHigh;
+            PingLow = result.PingLow;
+            DownloadSpeed = result.DownloadSpeed;
+            UploadSpeed = result.UploadSpeed;
+        }
         /// <summary>
         /// Unique Id
         /// </summary>
@@ -76,7 +94,5 @@
         /// Upload speed in Mbps
         /// </summary>
         public double UploadSpeed { get; set; }
-
-        public virtual ICollection<OutboundWebhookResult>? OutboundWebhookResults { get; set; }
     }
 }

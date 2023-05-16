@@ -10,15 +10,24 @@ namespace OutboundUp.Database
         public OutboundUpDbContext(DbContextOptions<OutboundUpDbContext> options) : base(options) { }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
-            => options.UseSqlite($"Data Source={DbPath}");
+            => options.UseSqlite($"Data Source={DbPath}")
+                        .EnableSensitiveDataLogging(); // nothing confidential is in this app
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<OutboundWebHook>()
                 .HasMany(x => x.Results)
                 .WithOne(x => x.WebHook)
-                .HasForeignKey(x => x.Id)
-                .HasPrincipalKey(x => x.Id);
+                .HasForeignKey(x => x.WebhookId)
+                .HasPrincipalKey(x => x.Id)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<SpeedTestResult>()
+                .HasMany(x => x.OutboundWebhookResults) // Multiple webhooks could be registered
+                .WithOne(x => x.SpeedTestResult)
+                .HasForeignKey(x => x.SpeedTestResultId)
+                .HasPrincipalKey(x => x.Id)
+                .OnDelete(DeleteBehavior.Cascade); ;
         }
 
         public DbSet<SpeedTestResult> SpeedTestResults { get; set; }
