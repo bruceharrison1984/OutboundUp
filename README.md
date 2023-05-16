@@ -7,18 +7,24 @@
 OuboundUp is a real-time, outbound internet connection monitor and speed tester. It is fully containerized, and can be run with or without full Sqlite database persistence.
 
 - Ookla Speed Test
-- Sqlite persistence layer
-- Angular front-end
-- .net core 6 backend
-- Quart.net for job scheduling
+- Sqlite persistence layer (30-day retention)
+- Generic outbound webhook support
 
 ## Docker
 
 ### Pull pre-built from Github Packages
 
 ```sh
+## pull image
 > docker pull ghcr.io/bruceharrison1984/outboundup:latest
-> docker run -d -p 8080:80 outboundup
+
+## run image
+> docker run -d -n outboundup -p 8080:80 ghcr.io/bruceharrison1984/outboundup:latest
+
+## tail logs
+> docker logs outboundup
+
+## Access the UI through http://localhost:80
 ```
 
 ### Build image locally from source
@@ -27,8 +33,11 @@ OuboundUp is a real-time, outbound internet connection monitor and speed tester.
 ## Run from the repo root directory to build the container locally
 > docker build -f OutboundUp/Dockerfile . -t outboundup` .
 
-## Run the container
+## Run the image
 > docker run -d -p 8080:80 outboundup
+
+## tail logs
+> docker logs outboundup
 
 ## Access the UI through http://localhost:80
 ```
