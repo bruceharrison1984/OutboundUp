@@ -48,7 +48,7 @@
           title="Add Webhook"
           (click)="showCreateModal()"
         >
-          Create WebHook
+          <span class="material-icons-outlined">add</span>
         </button>
       </h2>
       <span class="w-full" *ngIf="!webhooks?.length"
@@ -59,24 +59,45 @@
           class="table w-full table-zebra table-compact"
           aria-labelledby="tableLabel"
         >
-          <thead>
+          <thead class="text-center">
             <tr>
               <th>Id</th>
               <th>Target Url</th>
               <th>HTTP Method</th>
-              <th>Last Run Succeeded</th>
-              <th>Last Run Response Body</th>
-              <th>Last Run Status Code</th>
+              <th>WebHook Succeeded</th>
+              <th>WebHook Response Body</th>
+              <th>WebHook Status Code</th>
+              <th>Actions</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody class="text-center">
             <tr class="hover" *ngFor="let result of webhooks">
               <th>{{ result.id }}</th>
-              <td>{{ result.targetUrl }}</td>
+              <td>
+                <a class="link" [href]="result.targetUrl">{{
+                  result.targetUrl
+                }}</a>
+              </td>
               <td>{{ result.httpMethod }}</td>
-              <td>{{ result.results[0].isSuccess }}</td>
+              <td>
+                <span
+                  class="material-icons-outlined text-green-600"
+                  *ngIf="result.results[0].isSuccess"
+                  >check</span
+                >
+                <span
+                  class="material-icons-outlined text-red-600"
+                  *ngIf="!result.results[0].isSuccess"
+                  >clear</span
+                >
+              </td>
               <td>{{ result.results[0].responseBody }}</td>
               <td>{{ result.results[0].responseCode }}</td>
+              <td>
+                <button title="Delete WebHook" class="material-icons-outlined">
+                  delete
+                </button>
+              </td>
             </tr>
           </tbody>
         </table>
