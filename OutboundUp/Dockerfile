@@ -1,7 +1,7 @@
 #See https://aka.ms/customizecontainer to learn how to customize your debug container and how Visual Studio uses this Dockerfile to build your images for faster debugging.
 
-FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
-RUN apt-get update && apt-get install -y curl
+FROM mcr.microsoft.com/dotnet/aspnet:6.0-alpine AS base
+RUN apk --no-cache add curl
 WORKDIR /tools
 ## download ookla CLI
 RUN curl https://install.speedtest.net/app/cli/ookla-speedtest-1.2.0-linux-x86_64.tgz | tar -xzv 
