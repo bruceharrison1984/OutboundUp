@@ -1,4 +1,3 @@
-<input type="checkbox" id="my-modal" class="modal-toggle" />
 <div [ngClass]="createModalClasses">
   <div class="modal-box" (submit)="createWebHook()">
     <h3 class="font-bold text-lg">Create New Webhook</h3>
@@ -56,10 +55,10 @@
       >
       <div class="overflow-x-auto" *ngIf="webhooks?.length">
         <table
-          class="table w-full table-zebra table-compact"
+          class="table w-full table-zebra table-compact text-center"
           aria-labelledby="tableLabel"
         >
-          <thead class="text-center">
+          <thead>
             <tr>
               <th>Id</th>
               <th>Target Url</th>
@@ -70,7 +69,7 @@
               <th>Actions</th>
             </tr>
           </thead>
-          <tbody class="text-center">
+          <tbody>
             <tr class="hover" *ngFor="let result of webhooks">
               <th>{{ result.id }}</th>
               <td>
@@ -91,10 +90,18 @@
                   >clear</span
                 >
               </td>
-              <td>{{ result.results[0].responseBody }}</td>
+              <td>
+                <pre>{{
+                  result.results[0].responseBody || "Response body was empty"
+                }}</pre>
+              </td>
               <td>{{ result.results[0].responseCode }}</td>
               <td>
-                <button title="Delete WebHook" class="material-icons-outlined">
+                <button
+                  title="Delete WebHook"
+                  class="material-icons-outlined"
+                  (click)="deleteWebHook(result.id)"
+                >
                   delete
                 </button>
               </td>

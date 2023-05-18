@@ -38,7 +38,7 @@
       ></progress>
       <div class="overflow-x-auto" *ngIf="speedTestResults?.tableData?.length">
         <table
-          class="table w-full table-zebra table-compact"
+          class="table w-full table-zebra table-compact text-center"
           aria-labelledby="tableLabel"
         >
           <thead>
@@ -63,15 +63,81 @@
           <tbody>
             <tr
               class="hover"
-              *ngFor="let result of speedTestResults?.tableData"
+              *ngFor="let result of speedTestResults?.tableData; index as i"
             >
               <th>{{ result.id }}</th>
-              <td>{{ result.timestamp }}</td>
+              <td>{{ result.unixTimestampMs }}</td>
               <td>{{ result.isSuccess }}</td>
               <td>{{ result.serverHostName }}</td>
-              <td>{{ result.downloadSpeed }}</td>
-              <td>{{ result.uploadSpeed }}</td>
-              <td>{{ result.pingAverage }}</td>
+              <td>
+                {{ result.downloadSpeed }}
+                <span
+                  *ngIf="
+                    !greaterThanPrevious(
+                      result.downloadSpeed,
+                      getPreviousRow(i)?.downloadSpeed
+                    )
+                  "
+                  class="material-icons-outlined text-red-600"
+                  >arrow_downward</span
+                >
+                <span
+                  *ngIf="
+                    greaterThanPrevious(
+                      result.downloadSpeed,
+                      getPreviousRow(i)?.downloadSpeed
+                    )
+                  "
+                  class="material-icons-outlined text-green-600"
+                  >arrow_upward</span
+                >
+              </td>
+              <td>
+                {{ result.uploadSpeed }}
+                <span
+                  *ngIf="
+                    !greaterThanPrevious(
+                      result.uploadSpeed,
+                      getPreviousRow(i)?.uploadSpeed
+                    )
+                  "
+                  class="material-icons-outlined text-red-600"
+                  >arrow_downward</span
+                >
+                <span
+                  *ngIf="
+                    greaterThanPrevious(
+                      result.uploadSpeed,
+                      getPreviousRow(i)?.uploadSpeed
+                    )
+                  "
+                  class="material-icons-outlined text-green-600"
+                  >arrow_upward</span
+                >
+              </td>
+              <td>
+                {{ result.pingAverage }}
+                <span
+                  *ngIf="
+                    !greaterThanPrevious(
+                      result.pingAverage,
+                      getPreviousRow(i)?.pingAverage
+                    )
+                  "
+                  class="material-icons-outlined text-red-600"
+                  >arrow_downward</span
+                >
+                <span
+                  *ngIf="
+                    greaterThanPrevious(
+                      result.pingAverage,
+                      getPreviousRow(i)?.pingAverage
+                    )
+                  "
+                  class="material-icons-outlined text-green-600"
+                  >arrow_upward</span
+                >
+              </td>
               <td>{{ result.pingHigh }}</td>
               <td>{{ result.pingLow }}</td>
               <td>{{ result.downloadLatencyAverage }}</td>

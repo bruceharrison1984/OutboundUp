@@ -6,7 +6,7 @@ import { RouterModule } from '@angular/router';
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { HomeComponent } from './home/home.component';
-import { FetchDataComponent } from './fetch-data/fetch-data.component';
+import { RawDataComponent } from './raw-data/raw-data.component';
 import { SpeedTestChartComponent } from './line-chart/line-chart.component';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -20,7 +20,7 @@ export const REFRESH_INTERVAL = 5000;
     AppComponent,
     NavMenuComponent,
     HomeComponent,
-    FetchDataComponent,
+    RawDataComponent,
     SpeedTestChartComponent,
     WebHooksComponent,
   ],
@@ -32,7 +32,7 @@ export const REFRESH_INTERVAL = 5000;
     RouterModule.forRoot(
       [
         { path: '', component: HomeComponent },
-        { path: 'raw-data', component: FetchDataComponent },
+        { path: 'raw-data', component: RawDataComponent },
         { path: 'webhooks', component: WebHooksComponent },
       ],
       { useHash: true }

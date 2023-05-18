@@ -67,4 +67,9 @@ export class WebHooksComponent implements OnDestroy {
       return { invalidUrl: true };
     }
   };
+
+  deleteWebHook(id: number) {
+    console.log('test');
+    this.webhookService.deleteWebHook(id).pipe(take(1)).subscribe();
+  }
 }

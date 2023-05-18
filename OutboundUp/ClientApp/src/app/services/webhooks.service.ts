@@ -20,4 +20,8 @@ export class WebHooksService {
       TargetUrl: targetUrl,
     });
   }
+
+  deleteWebHook(id: number) {
+    return this.http.delete(this.baseUrl + `WebHook?id=${id}`);
+  }
 }

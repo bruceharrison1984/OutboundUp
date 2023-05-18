@@ -27,7 +27,7 @@ export interface RawTableData {
 
 export interface RawSpeedTestResult {
   id: number;
-  timestamp: number;
+  unixTimestampMs: number | string;
   isSuccess: boolean;
   serverHostName: string;
   downloadSpeed: number;

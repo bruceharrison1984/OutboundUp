@@ -5,9 +5,9 @@ import { RawTableData } from '../types/types';
 
 @Component({
   selector: 'app-fetch-data',
-  templateUrl: './fetch-data.component.html',
+  templateUrl: './raw-data.component.html',
 })
-export class FetchDataComponent {
+export class RawDataComponent {
   speedTestResults?: RawTableData;
   pageSize = 10;
   pageNumber = 0;
@@ -15,8 +15,6 @@ export class FetchDataComponent {
 
   constructor(public speedTestResultService: FetchDataService) {
     this.getPage();
-    // const totalPages = this.speedTestResults?.totalCount / this.pageSize;
-    // this.pages = Array.from({ length: totalPages }, (v, i) => i);
   }
 
   onPageSizeChange(pageSize: string) {
@@ -36,12 +34,35 @@ export class FetchDataComponent {
       .getRawSpeedTestData(this.pageNumber, this.pageSize)
       .pipe(take(1))
       .subscribe((results) => {
+        results.data.tableData = results.data.tableData.map((x) => {
+          x.unixTimestampMs = `${new Date(x.unixTimestampMs).toLocaleDateString(
+            'en-us',
+            { month: '2-digit', day: '2-digit', year: 'numeric' }
+          )} ${new Date(x.unixTimestampMs).toLocaleTimeString('en-us', {
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+          })}`;
+          return x;
+        });
+
         this.speedTestResults = results.data;
+
         const totalPages = this.speedTestResults?.totalCount / this.pageSize;
         this.pages = Array.from({ length: totalPages }, (v, i) => i + 1).slice(
           0,
           totalPages
         );
       });
+  }
+
+  greaterThanPrevious(currentValue?: number, previousValue?: number) {
+    if (!currentValue) return false;
+    if (!previousValue) return true;
+    return currentValue < previousValue;
+  }
+
+  getPreviousRow(index: number) {
+    return this.speedTestResults?.tableData[index - 1];
   }
 }
