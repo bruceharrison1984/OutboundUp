@@ -19,8 +19,9 @@ namespace OutboundUp.Jobs
         {
             try
             {
+                var cutoffDate = DateTimeOffset.UtcNow.AddDays(-90).ToUnixTimeMilliseconds();
                 _logger.LogInformation("Beginning data cleanup, deleting any entries older than 30 days");
-                var oldResults = _dbContext.SpeedTestResults.Where(x => x.UnixTimestampMs < DateTimeOffset.UtcNow.AddDays(-90).ToUnixTimeMilliseconds());
+                var oldResults = _dbContext.SpeedTestResults.Where(x => x.UnixTimestampMs < cutoffDate);
                 var recordsDeleted = await oldResults.ExecuteDeleteAsync(context.CancellationToken);
                 _logger.LogInformation($"{recordsDeleted} SpeedTestResult records were removed");
             }

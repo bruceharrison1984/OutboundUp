@@ -32,7 +32,8 @@ namespace OutboundUp
                 q.AddTrigger(opts => opts
                     .ForJob(jobKey)
                     .WithIdentity("SpeedTestJob-Trigger")
-                    .WithCronSchedule("0 * * * ? *")
+                    .WithSimpleSchedule(x => x.WithIntervalInHours(1).RepeatForever())
+                    
                 );
 
                 var cleanupJobKey = new JobKey("DataCleanupJob");
@@ -41,7 +42,7 @@ namespace OutboundUp
                 q.AddTrigger(opts => opts
                     .ForJob(cleanupJobKey)
                     .WithIdentity("DataCleanupJob-Trigger")
-                    .WithCronSchedule("0 0 0 ? * *") // run every midnight to clean up data
+                    .WithSimpleSchedule(x => x.WithIntervalInHours(24).RepeatForever())
                 );
             });
             builder.Services.AddQuartzServer(q =>
