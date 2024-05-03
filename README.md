@@ -77,15 +77,15 @@ You can use something like [Webhook.site](https://webhook.site/) to test out thi
 Outbound up is somewhat configurable via environment variables:
 | Name | Description | Default |
 |---|---|---|
-|OutboundUp\_\_SpeedTestIntervalMinutes | How often the speed test is ran | 30 |
-|OutboundUp\_\_DataCleanupIntervalHours | How often to run stale data cleanup | 24 |
-|OutboundUp\_\_StaleEntryTTLDays | How old should data be before it is pruned | 90 |
+|OutboundUp__SpeedTestIntervalMinutes | How often the speed test is ran | 30 |
+|OutboundUp__DataCleanupIntervalHours | How often to run stale data cleanup | 24 |
+|OutboundUp__StaleEntryTTLDays | How old should data be before it is pruned | 90 |
 
 ```sh
 docker run -d \
-  -e OutboundUp\_\_SpeedTestIntervalMinutes=15 \
-  -e OutboundUp\_\_DataCleanupIntervalHours=48 \
-  -e OutboundUp\_\_StaleEntryTTLDays=30 \
+  -e OutboundUp__SpeedTestIntervalMinutes=15 \
+  -e OutboundUp__DataCleanupIntervalHours=48 \
+  -e OutboundUp__StaleEntryTTLDays=30 \
   --name outboundup \
   -p 8080:80 \
   outboundup
