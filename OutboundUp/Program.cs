@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using OutboundUp.Database;
 using OutboundUp.Jobs;
+using OutboundUp.Models;
 using OutboundUp.Services;
 using OutboundUp.SpeedTests.Ookla;
 using Quartz;
@@ -22,6 +24,12 @@ namespace OutboundUp
 
             builder.Services.AddDbContext<OutboundUpDbContext>();
             builder.Services.Configure<QuartzOptions>(builder.Configuration.GetSection("Quartz"));
+
+            builder.Services.Configure<OutboundUpOptions>(builder.Configuration.GetSection("OutboundUp"));
+
+            // read options again so we have values for the job intervals
+            var options = builder.Configuration.GetSection("OutboundUp").Get<OutboundUpOptions>();
+
             builder.Services.AddQuartz(q =>
             {
                 q.UseMicrosoftDependencyInjectionJobFactory();
@@ -32,8 +40,7 @@ namespace OutboundUp
                 q.AddTrigger(opts => opts
                     .ForJob(jobKey)
                     .WithIdentity("SpeedTestJob-Trigger")
-                    .WithSimpleSchedule(x => x.WithIntervalInHours(1).RepeatForever())
-                    
+                    .WithSimpleSchedule(x => x.WithIntervalInMinutes(options.SpeedTestIntervalMinutes).RepeatForever())
                 );
 
                 var cleanupJobKey = new JobKey("DataCleanupJob");
@@ -42,7 +49,7 @@ namespace OutboundUp
                 q.AddTrigger(opts => opts
                     .ForJob(cleanupJobKey)
                     .WithIdentity("DataCleanupJob-Trigger")
-                    .WithSimpleSchedule(x => x.WithIntervalInHours(24).RepeatForever())
+                    .WithSimpleSchedule(x => x.WithIntervalInHours(options.DataCleanupIntervalHours).RepeatForever())
                 );
             });
             builder.Services.AddQuartzServer(q =>
@@ -63,10 +70,26 @@ namespace OutboundUp
 
             var app = builder.Build();
 
-
-            // Configure the HTTP request pipeline.
-            if (!app.Environment.IsDevelopment())
+            using (var scope = app.Services.CreateScope())
             {
+                var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+                var dbContext = scope.ServiceProvider.GetRequiredService<OutboundUpDbContext>();
+                var pendingMigrations = dbContext.Database.GetPendingMigrations();
+                if (pendingMigrations.Any())
+                {
+                    logger.LogInformation("Running DB migrations...");
+                    dbContext.Database.Migrate();
+                }
+                else
+                {
+                    logger.LogInformation("No DB migrations required");
+                }
+            }
+            using (var scope = app.Services.CreateScope())
+            {
+                var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+                var opts = scope.ServiceProvider.GetRequiredService<IOptions<OutboundUpOptions>>();
+                logger.LogInformation($"Loaded configuration - SpeedTestIntervalMinutes: '{opts.Value.SpeedTestIntervalMinutes}' | DataCleanupIntervalHours: '{opts.Value.DataCleanupIntervalHours}' | StaleEntryTTLDays: '{opts.Value.StaleEntryTTLDays}'");
             }
 
             app.UseStaticFiles();
@@ -84,23 +107,6 @@ namespace OutboundUp
                 pattern: "{controller}/{action=Index}/{id?}");
 
             app.MapFallbackToFile("index.html");
-
-            using (var scope = app.Services.CreateScope())
-            {
-                var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
-                var dbContext = scope.ServiceProvider.GetRequiredService<OutboundUpDbContext>();
-                var pendingMigrations = dbContext.Database.GetPendingMigrations();
-                if (pendingMigrations.Any())
-                {
-                    logger.LogInformation("Running DB migrations...");
-                    dbContext.Database.Migrate();
-                }
-                else
-                {
-                    logger.LogInformation("No DB migrations required");
-                }
-            }
-
             app.Run();
         }
     }
