@@ -7,8 +7,8 @@
 
 OuboundUp is a real-time, outbound internet connection monitor and speed tester. It is fully containerized, and can be run with or without full Sqlite database persistence.
 
-- Ookla Speed Test
-- Sqlite persistence layer (30-day retention)
+- Ookla Speed Test (30 minute interval, configurable)
+- Sqlite persistence layer (90-day retention default, configurable)
 - Generic outbound webhook support
 
 ## Docker
