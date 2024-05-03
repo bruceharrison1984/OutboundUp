@@ -59,6 +59,11 @@ namespace OutboundUp.Controllers
         {
             var baseQuery = _dbContext.SpeedTestResults.OrderByDescending(x => x.Id).Take(50);
 
+            if(baseQuery.Count() == 0)
+            {
+                return new ApiResponse<Statistics>(new Statistics());
+            }
+
             var statistics = new Statistics
             {
                 AverageDownloadSpeed = Math.Round(await baseQuery.AverageAsync(x => x.DownloadSpeed)),
