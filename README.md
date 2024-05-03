@@ -25,7 +25,7 @@ OuboundUp is a real-time, outbound internet connection monitor and speed tester.
 ## tail logs
 > docker logs outboundup
 
-## Access the UI through http://localhost:80
+## Access the UI through http://localhost:8080
 ```
 
 ### Build image locally from source
@@ -40,7 +40,7 @@ OuboundUp is a real-time, outbound internet connection monitor and speed tester.
 ## tail logs
 > docker logs outboundup
 
-## Access the UI through http://localhost:80
+## Access the UI through http://localhost:8080
 ```
 
 ## Web Hooks
