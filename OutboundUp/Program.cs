@@ -32,7 +32,7 @@ namespace OutboundUp
                 q.AddTrigger(opts => opts
                     .ForJob(jobKey)
                     .WithIdentity("SpeedTestJob-Trigger")
-                    .WithCronSchedule("0 * * ? * *")
+                    .WithCronSchedule("0 * * * ? *")
                 );
 
                 var cleanupJobKey = new JobKey("DataCleanupJob");
