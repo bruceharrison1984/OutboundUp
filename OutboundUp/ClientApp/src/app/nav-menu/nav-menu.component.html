@@ -64,9 +64,9 @@
   <div class="navbar-end">
     <span
       [title]="statusMessage"
-      ngClass="material-icons-outlined text-green-600 cursor-pointer mr-5 {{
+      ngClass="material-icons-outlined cursor-pointer mr-5 {{
         healthCheckResult?.data?.isJobRunning ? 'animate-spin' : null
-      }} {{ healthCheckResult ? 'fill-green-600' : 'fill-red-600' }}"
+      }} {{ healthCheckResult ? 'text-green-600' : 'text-red-600' }}"
       >settings</span
     >
   </div>
